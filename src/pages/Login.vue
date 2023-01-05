@@ -25,10 +25,8 @@
         </div>
         <div class="login-form-bottom">
           <button>Log In</button>
-          <span
-            >Don't have an account?
-          </span>
-            <a href="#">Sign Up</a>
+          <span>Don't have an account? </span>
+          <a href="#">Sign Up</a>
         </div>
       </div>
     </div>
@@ -41,14 +39,27 @@
 <style lang="scss">
 #loginPage {
   display: flex;
-  background-color: #dbeafe;
-  @media only screen and (max-width: 768px) {
+  background-color: #fff;
+  align-items: flex-start;
+  height: 100vh;
+
+  @include mobile {
     flex-direction: column-reverse;
-}
+    justify-content: flex-end;
+  }
+
   .left-side {
-    margin: auto;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include mobile {
+      width: 100%;
+    }
+
     .login-form {
       padding: 3rem;
+
       .login-form-content {
         h2 {
           font-size: 1.25rem;
@@ -62,6 +73,7 @@
           line-height: 2rem;
         }
       }
+
       .login-form-email {
         span {
           display: block;
@@ -75,6 +87,7 @@
           min-width: 20rem;
         }
       }
+
       .login-form-password {
         .login-form-password-subtitles {
           display: flex;
@@ -92,11 +105,13 @@
             }
           }
         }
+
         input {
           height: 2.5rem;
           min-width: 20rem;
         }
       }
+
       .login-form-checkbox {
         display: flex;
         margin: 1rem 0.2rem 1rem 0.2rem;
@@ -106,6 +121,7 @@
           line-height: 1.5rem;
         }
       }
+
       .login-form-bottom {
         text-align: center;
         margin: 1rem 0.2rem 1rem 0.2rem;
@@ -131,10 +147,22 @@
       }
     }
   }
+
   .right-side {
     width: 50%;
+    height: 100%;
+
+    @include mobile {
+      width: 100%;
+      height: 30%;
+    }
+
     img {
-      max-height: 100vh;
+      max-width: 100%;
+      max-height: 100%;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
   }
 }
