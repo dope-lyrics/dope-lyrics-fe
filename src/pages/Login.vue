@@ -43,7 +43,7 @@
   align-items: flex-start;
   height: 100vh;
 
-  @include mobile {
+  @include mobileOrTablet {
     flex-direction: column-reverse;
     justify-content: flex-end;
   }
@@ -53,12 +53,18 @@
     margin-left: auto;
     margin-right: auto;
 
-    @include mobile {
+    @include mobileOrTablet {
       width: 100%;
     }
 
     .login-form {
       padding: 3rem;
+      width: 50%;
+      margin: auto;
+      @include mobileOrTablet {
+        margin: 0;
+        width: 100%;
+      }
 
       .login-form-content {
         h2 {
@@ -73,7 +79,6 @@
           line-height: 2rem;
         }
       }
-
       .login-form-email {
         span {
           display: block;
@@ -83,11 +88,10 @@
         }
         input {
           height: 2.5rem;
-          min-width: 100%;
-          min-width: 20rem;
+          width: 100%;
+          margin: 0.5rem 0;
         }
       }
-
       .login-form-password {
         .login-form-password-subtitles {
           display: flex;
@@ -105,13 +109,12 @@
             }
           }
         }
-
         input {
           height: 2.5rem;
-          min-width: 20rem;
+          width: 100%;
+          margin: 0.5rem 0;
         }
       }
-
       .login-form-checkbox {
         display: flex;
         margin: 1rem 0.2rem 1rem 0.2rem;
@@ -121,7 +124,6 @@
           line-height: 1.5rem;
         }
       }
-
       .login-form-bottom {
         text-align: center;
         margin: 1rem 0.2rem 1rem 0.2rem;
@@ -152,7 +154,7 @@
     width: 50%;
     height: 100%;
 
-    @include mobile {
+    @include mobileOrTablet {
       width: 100%;
       height: 30%;
     }
