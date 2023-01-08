@@ -1,5 +1,5 @@
 <template>
-  <div id="loginPage">
+  <div class="login-page">
     <div class="left-side">
       <div class="login-form">
         <div class="login-form-content">
@@ -7,12 +7,12 @@
           <h3>Enter your details below</h3>
         </div>
         <div class="login-form-email">
-          <span>Email:</span>
+          <label>Email:</label>
           <input type="text" />
         </div>
         <div class="login-form-password">
           <div class="login-form-password-subtitles">
-            <span>Password:</span>
+            <label>Password:</label>
             <span>
               <a href="#">Forgot password?</a>
             </span>
@@ -21,11 +21,11 @@
         </div>
         <div class="login-form-checkbox">
           <input type="checkbox" />
-          <span>Remember Me</span>
+          <label>Remember Me</label>
         </div>
         <div class="login-form-bottom">
           <button>Log In</button>
-          <span>Don't have an account? </span>
+          <label>Don't have an account? </label>
           <a href="#">Sign Up</a>
         </div>
       </div>
@@ -36,8 +36,8 @@
   </div>
 </template>
 <script setup lang="ts"></script>
-<style lang="scss">
-#loginPage {
+<style lang="scss" scoped>
+.login-page {
   display: flex;
   align-items: flex-start;
   height: 100vh;
@@ -79,7 +79,7 @@
         }
       }
       .login-form-email {
-        span {
+        label {
           display: block;
           font-size: 1rem;
           font-weight: 700;
@@ -95,11 +95,13 @@
         .login-form-password-subtitles {
           display: flex;
           justify-content: space-between;
-          span {
+          label {
             display: block;
             font-size: 1rem;
             font-weight: 700;
             line-height: 2.5rem;
+          }
+          span{
             a {
               font-size: 0.875rem;
               font-weight: 400;
@@ -117,7 +119,7 @@
       .login-form-checkbox {
         display: flex;
         margin: 1rem 0.2rem 1rem 0.2rem;
-        span {
+        label {
           color: #110f24;
           font-size: 1rem;
           line-height: 1.5rem;
@@ -135,7 +137,7 @@
           border-radius: 30px;
           background-color: #3b82f6;
         }
-        span {
+        label {
           opacity: 0.4;
           color: #110f24;
           font-size: 1rem;

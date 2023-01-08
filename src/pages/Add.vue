@@ -1,7 +1,7 @@
 <template>
-  <div id="addLyricsPage">
+  <div class="add-lyrics-page">
     <div class="left-side">
-      <div class="add-lyrics-form">
+      <form class="add-lyrics-form">
         <div class="add-lyrics-content">
           <h2>Add Lyrics</h2>
           <h3>
@@ -11,24 +11,24 @@
         </div>
 
         <div class="add-lyrics-song-name">
-          <span>Song Name:</span>
+          <label>Song Name:</label>
           <input type="text" />
         </div>
 
         <div class="add-lyrics-song-type">
-          <span>Song Type:</span>
+          <label>Song Type:</label>
           <input type="text" />
         </div>
 
         <div class="add-lyrics-song-lyrics">
-          <span>Lyrics:</span>
+          <label>Lyrics:</label>
           <textarea type="text" />
         </div>
 
         <div class="add-lyrics-button">
           <button>SAVE</button>
         </div>
-      </div>
+      </form>
     </div>
     <div class="right-side">
       <img src="src/assets/images/add-lyrics-image.jpg" />
@@ -36,8 +36,8 @@
   </div>
 </template>
 <script setup lang="ts"></script>
-<style lang="scss">
-#addLyricsPage {
+<style lang="scss" scoped>
+.add-lyrics-page {
   display: flex;
   align-items: flex-start;
   height: 100vh;
@@ -62,7 +62,7 @@
         margin: 0;
         width: 100%;
       }
-      span {
+      label {
         display: block;
         font-size: 1rem;
         font-weight: 700;
