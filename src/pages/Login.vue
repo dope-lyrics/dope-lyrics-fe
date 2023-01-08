@@ -39,7 +39,6 @@
 <style lang="scss">
 #loginPage {
   display: flex;
-  background-color: #fff;
   align-items: flex-start;
   height: 100vh;
 
