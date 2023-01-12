@@ -1,5 +1,5 @@
 <template>
-  <div id="loginPage">
+  <div class="login-page">
     <div class="left-side">
       <form class="login-form" @submit.prevent="handleSubmit">
         <div class="login-form-content">
@@ -7,12 +7,12 @@
           <h3>Enter your details below</h3>
         </div>
         <div class="login-form-email">
-          <span>Email:</span>
-          <input name="email" type="text" @input="handleChange" />
+          <label>Email:</label>
+          <input type="text" />
         </div>
         <div class="login-form-password">
           <div class="login-form-password-subtitles">
-            <span>Password:</span>
+            <label>Password:</label>
             <span>
               <a href="#">Forgot password?</a>
             </span>
@@ -20,12 +20,12 @@
           <input type="password" name="password" @input="handleChange" />
         </div>
         <div class="login-form-checkbox">
-          <input name="rememberMe" type="checkbox" @input="handleChange" />
-          <span>Remember Me</span>
+          <input type="checkbox" />
+          <label>Remember Me</label>
         </div>
         <div class="login-form-bottom">
           <button>Log In</button>
-          <span>Don't have an account? </span>
+          <label>Don't have an account? </label>
           <a href="#">Sign Up</a>
         </div>
       </form>
@@ -37,7 +37,6 @@
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
-import axios from "@/axios/axios";
 import { login } from "@/api/api";
 
 type FormValues = {
@@ -70,14 +69,14 @@ function handleChange(event: Event) {
     element.type === "checkbox" ? element.checked : element.value;
 }
 </script>
-<style lang="scss">
-#loginPage {
+
+<style lang="scss" scoped>
+.login-page {
   display: flex;
-  background-color: #fff;
   align-items: flex-start;
   height: 100vh;
 
-  @include mobile {
+  @include mobileOrTablet {
     flex-direction: column-reverse;
     justify-content: flex-end;
   }
@@ -87,12 +86,18 @@ function handleChange(event: Event) {
     margin-left: auto;
     margin-right: auto;
 
-    @include mobile {
+    @include mobileOrTablet {
       width: 100%;
     }
 
     .login-form {
       padding: 3rem;
+      width: 50%;
+      margin: auto;
+      @include mobileOrTablet {
+        margin: 0;
+        width: 100%;
+      }
 
       .login-form-content {
         h2 {
@@ -107,9 +112,8 @@ function handleChange(event: Event) {
           line-height: 2rem;
         }
       }
-
       .login-form-email {
-        span {
+        label {
           display: block;
           font-size: 1rem;
           font-weight: 700;
@@ -117,20 +121,21 @@ function handleChange(event: Event) {
         }
         input {
           height: 2.5rem;
-          min-width: 100%;
-          min-width: 20rem;
+          width: 100%;
+          margin: 0.5rem 0;
         }
       }
-
       .login-form-password {
         .login-form-password-subtitles {
           display: flex;
           justify-content: space-between;
-          span {
+          label {
             display: block;
             font-size: 1rem;
             font-weight: 700;
             line-height: 2.5rem;
+          }
+          span {
             a {
               font-size: 0.875rem;
               font-weight: 400;
@@ -139,23 +144,21 @@ function handleChange(event: Event) {
             }
           }
         }
-
         input {
           height: 2.5rem;
-          min-width: 20rem;
+          width: 100%;
+          margin: 0.5rem 0;
         }
       }
-
       .login-form-checkbox {
         display: flex;
         margin: 1rem 0.2rem 1rem 0.2rem;
-        span {
+        label {
           color: #110f24;
           font-size: 1rem;
           line-height: 1.5rem;
         }
       }
-
       .login-form-bottom {
         text-align: center;
         margin: 1rem 0.2rem 1rem 0.2rem;
@@ -168,7 +171,7 @@ function handleChange(event: Event) {
           border-radius: 30px;
           background-color: #3b82f6;
         }
-        span {
+        label {
           opacity: 0.4;
           color: #110f24;
           font-size: 1rem;
@@ -186,7 +189,7 @@ function handleChange(event: Event) {
     width: 50%;
     height: 100%;
 
-    @include mobile {
+    @include mobileOrTablet {
       width: 100%;
       height: 30%;
     }
