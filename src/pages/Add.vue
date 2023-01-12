@@ -14,9 +14,9 @@ const status = ref<any>(null);
 function handleClick() {
   add({
     payload: {
-      lyric: "0 to 100 real quick",
-      mood: "banger",
-      singer: "Drake",
+      lyric: "Ya sev, ister vazgeç beklentiler sadece üzer",
+      singer: "Athena",
+      language: "tr",
     },
     errorCallback: (error) => {
       status.value = error;

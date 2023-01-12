@@ -17,7 +17,7 @@ async function login({ payload, errorCallback, successCallback }: Login) {
 
 async function add({ payload, errorCallback, successCallback }: Add) {
   try {
-    const response = await axiosPrivate.post("/add", payload);
+    const response = await axiosPrivate.post("lyrics/add", payload);
     console.log("add response : ", add);
     if (successCallback) successCallback(response);
   } catch (error) {

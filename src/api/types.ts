@@ -12,8 +12,9 @@ type Login = {
 
 type AddPayload = {
   lyric: string;
+  mood?: string;
   singer: string;
-  mood: string;
+  language: "en" | "tr";
 };
 type Add = {
   payload: AddPayload;
