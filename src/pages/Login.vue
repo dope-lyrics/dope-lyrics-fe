@@ -1,14 +1,14 @@
 <template>
   <div id="loginPage">
     <div class="left-side">
-      <div class="login-form">
+      <form class="login-form" @submit.prevent="handleSubmit">
         <div class="login-form-content">
           <h2>Welcome back</h2>
           <h3>Enter your details below</h3>
         </div>
         <div class="login-form-email">
           <span>Email:</span>
-          <input type="text" />
+          <input name="email" type="text" @input="handleChange" />
         </div>
         <div class="login-form-password">
           <div class="login-form-password-subtitles">
@@ -17,10 +17,10 @@
               <a href="#">Forgot password?</a>
             </span>
           </div>
-          <input type="text" />
+          <input type="password" name="password" @input="handleChange" />
         </div>
         <div class="login-form-checkbox">
-          <input type="checkbox" />
+          <input name="rememberMe" type="checkbox" @input="handleChange" />
           <span>Remember Me</span>
         </div>
         <div class="login-form-bottom">
@@ -28,14 +28,48 @@
           <span>Don't have an account? </span>
           <a href="#">Sign Up</a>
         </div>
-      </div>
+      </form>
     </div>
     <div class="right-side">
-      <img src="src/assets/images/login-horizontal.jpeg" />
+      <img src="@/assets/images/login-horizontal.jpeg" />
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { reactive } from "vue";
+import axios from "@/axios/axios";
+import { login } from "@/api/api";
+
+type FormValues = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
+
+const formValues: FormValues = reactive({
+  email: "",
+  password: "",
+  rememberMe: false,
+});
+
+function handleSubmit() {
+  const payload = {
+    email: formValues.email,
+    password: formValues.password,
+  };
+  login({
+    payload,
+  });
+}
+
+function handleChange(event: Event) {
+  const element = event.target as HTMLInputElement;
+
+  // @ts-ignore
+  formValues[element.name] =
+    element.type === "checkbox" ? element.checked : element.value;
+}
+</script>
 <style lang="scss">
 #loginPage {
   display: flex;
