@@ -8,7 +8,7 @@
         </div>
         <div class="login-form-email">
           <label>Email:</label>
-          <input type="text" />
+          <input type="text" name="email" @input="handleChange" />
         </div>
         <div class="login-form-password">
           <div class="login-form-password-subtitles">

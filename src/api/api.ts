@@ -1,6 +1,6 @@
 import axios, { axiosPrivate } from "@/axios/axios";
 import Cookies from "js-cookie";
-import type { Login, Add, Token } from "@/api/types";
+import type { Login, Add, Token, FetchLyrics } from "@/api/types";
 
 async function login({ payload, errorCallback, successCallback }: Login) {
   try {
@@ -12,17 +12,6 @@ async function login({ payload, errorCallback, successCallback }: Login) {
   } catch (error) {
     console.error(error);
     if (errorCallback) errorCallback(error);
-  }
-}
-
-async function add({ payload, errorCallback, successCallback }: Add) {
-  try {
-    const response = await axiosPrivate.post("lyrics/add", payload);
-    console.log("add response : ", add);
-    if (successCallback) successCallback(response);
-  } catch (error) {
-    console.error(error);
-    if (errorCallback) errorCallback();
   }
 }
 
@@ -46,4 +35,24 @@ async function token({
   }
 }
 
-export { login, add, token };
+async function add({ payload, errorCallback, successCallback }: Add) {
+  try {
+    const response = await axiosPrivate.post("lyrics/add", payload);
+    console.log("add response : ", add);
+    if (successCallback) successCallback(response);
+  } catch (error) {
+    console.error(error);
+    if (errorCallback) errorCallback();
+  }
+}
+
+async function fetchLyrics({ errorCallback, successCallback }: FetchLyrics) {
+  try {
+    const response = await axios.get("/lyrics");
+    if (successCallback) successCallback(response?.data?.data);
+  } catch (error) {
+    if (errorCallback) errorCallback(error);
+  }
+}
+
+export { login, add, token, fetchLyrics };

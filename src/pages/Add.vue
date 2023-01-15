@@ -41,9 +41,10 @@ import { add } from "@/api/api";
 function handleSubmit() {
   add({
     payload: {
-      lyric: "Ya sev, ister vazgeç beklentiler sadece üzer",
-      singer: "Athena",
-      language: "tr",
+      lyric: "The future is born, put the past in the casket",
+      singer: "Lil Wayne",
+      language: "en",
+      mood: "banger",
     },
     errorCallback: (error) => {},
     successCallback: (response) => {},

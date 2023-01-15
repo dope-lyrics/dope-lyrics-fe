@@ -1,5 +1,10 @@
 type Callback = (arg?: any) => void;
 
+type ApiResponse = {
+  errorCallback?: Callback;
+  successCallback?: Callback;
+};
+
 type LoginPayload = {
   email: string;
   password: string;
@@ -16,11 +21,10 @@ type AddPayload = {
   singer: string;
   language: "en" | "tr";
 };
+
 type Add = {
   payload: AddPayload;
-  errorCallback?: Callback;
-  successCallback?: Callback;
-};
+} & ApiResponse;
 
 type Token = {
   refreshToken: string;
@@ -28,4 +32,6 @@ type Token = {
   successCallback?: Callback;
 };
 
-export type { Login, Add, Token };
+type FetchLyrics = {} & ApiResponse;
+
+export type { Login, Add, Token, FetchLyrics };
