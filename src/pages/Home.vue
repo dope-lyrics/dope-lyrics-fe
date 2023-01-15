@@ -30,7 +30,7 @@ import { onMounted, ref, reactive } from "vue";
 const lyricsData = ref<any>([]);
 const fetchStatus = ref("");
 const moodSearchInput = ref("");
-const lyricsByMood = reactive<any[]>([]);
+const lyricsByMood = ref<any[]>([]);
 
 onMounted(() => {
   fetchLyrics({
@@ -50,6 +50,7 @@ function handleMood(event: any) {
 }
 async function findByMood() {
   const response = await axios.get("lyrics/" + moodSearchInput.value);
+  lyricsByMood.value = response?.data?.data;
   console.log(response);
 }
 </script>
