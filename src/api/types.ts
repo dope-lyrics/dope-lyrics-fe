@@ -15,10 +15,11 @@ type Login = {
   successCallback?: Callback;
 };
 
-type AddPayload = {
+export type AddPayload = {
+  singer: string;
+  song: string;
   lyric: string;
   mood?: string;
-  singer: string;
   language: "en" | "tr";
 };
 

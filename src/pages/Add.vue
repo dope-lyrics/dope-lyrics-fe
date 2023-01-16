@@ -10,19 +10,31 @@
           </h3>
         </div>
 
+        <div class="add-lyrics-singer">
+          <label>Singer:</label>
+          <input type="text" name="singer" @input="handleChange" />
+        </div>
         <div class="add-lyrics-song-name">
           <label>Song Name:</label>
-          <input type="text" />
+          <input type="text" name="song" @input="handleChange" />
         </div>
 
-        <div class="add-lyrics-song-type">
-          <label>Song Type:</label>
-          <input type="text" />
+        <div class="add-lyrics-mood">
+          <label>Mood:</label>
+          <input type="text" name="mood" @input="handleChange" />
         </div>
 
         <div class="add-lyrics-song-lyrics">
           <label>Lyrics:</label>
-          <textarea type="text" />
+          <textarea type="text" name="lyric" @input="handleChange"></textarea>
+        </div>
+
+        <div class="add-lyrics-song-language">
+          <label>Language:</label>
+          <select @change="handleChange" name="language">
+            <option value="en">English</option>
+            <option value="tr">Türkçe</option>
+          </select>
         </div>
 
         <div class="add-lyrics-button">
@@ -37,15 +49,35 @@
 </template>
 <script setup lang="ts">
 import { add } from "@/api/api";
+import { ref, watch } from "vue";
+import type { AddPayload } from "@/api/types";
+
+const formValues = ref<AddPayload>({
+  singer: "",
+  song: "",
+  lyric: "",
+  language: "tr",
+  mood: "",
+});
+
+function handleChange(event: Event) {
+  const eventTarget = event.target as HTMLInputElement;
+  // @ts-ignore
+  formValues.value[eventTarget.name] = eventTarget.value;
+}
 
 function handleSubmit() {
+  const payload: AddPayload = {
+    lyric: formValues.value.lyric,
+    singer: formValues.value.singer,
+    language: formValues.value.language,
+    mood: formValues.value.mood,
+    song: formValues.value.song,
+  };
+
+  console.log("submitted payload: ", payload);
   add({
-    payload: {
-      lyric: "The future is born, put the past in the casket",
-      singer: "Lil Wayne",
-      language: "en",
-      mood: "banger",
-    },
+    payload,
     errorCallback: (error) => {},
     successCallback: (response) => {},
   });

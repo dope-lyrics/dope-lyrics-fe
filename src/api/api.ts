@@ -4,11 +4,13 @@ import type { Login, Add, Token, FetchLyrics } from "@/api/types";
 
 async function login({ payload, errorCallback, successCallback }: Login) {
   try {
-    const response = await axios.post("/login", payload);
+    const response = await axios.post<{
+      accessToken: string;
+      refreshToken: string;
+    }>("/login", payload);
     Cookies.set("access_token", response.data.accessToken);
     Cookies.set("refresh_token", response.data.refreshToken);
-
-    if (successCallback) successCallback();
+    if (successCallback) successCallback(response);
   } catch (error) {
     console.error(error);
     if (errorCallback) errorCallback(error);
@@ -21,7 +23,7 @@ async function token({
   successCallback,
 }: Token): Promise<{ accessToken: string; refreshToken: string } | undefined> {
   try {
-    const response = await axios.post("/token", {
+    const response = await axios.post<any>("/token", {
       token: refreshToken,
     });
     console.log(response);
@@ -48,7 +50,7 @@ async function add({ payload, errorCallback, successCallback }: Add) {
 
 async function fetchLyrics({ errorCallback, successCallback }: FetchLyrics) {
   try {
-    const response = await axios.get("/lyrics");
+    const response = await axios.get<any>("/lyrics");
     if (successCallback) successCallback(response?.data?.data);
   } catch (error) {
     if (errorCallback) errorCallback(error);

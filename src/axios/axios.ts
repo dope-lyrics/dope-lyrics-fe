@@ -1,8 +1,7 @@
-import axios from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { token } from "@/api/api";
-import { AxiosRequestConfig } from "axios";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
@@ -59,5 +58,43 @@ axiosPrivate.interceptors.request.use(
   }
 );
 
-export default a;
-export { axiosPrivate };
+type ApiResponse = any;
+
+const api = (axios: AxiosInstance) => {
+  return {
+    get: <T extends ApiResponse>(
+      url: string,
+      config: AxiosRequestConfig = {}
+    ) => {
+      return axios.get<T>(url, config);
+    },
+    delete: <T extends ApiResponse>(
+      url: string,
+      config: AxiosRequestConfig = {}
+    ) => {
+      return axios.delete<T>(url, config);
+    },
+    put: <T extends ApiResponse>(
+      url: string,
+      body: unknown,
+      config: AxiosRequestConfig = {}
+    ) => {
+      return axios.put<T>(url, body, config);
+    },
+    patch: <T>(url: string, body: unknown, config: AxiosRequestConfig = {}) => {
+      return axios.patch<T>(url, body, config);
+    },
+    post: <T extends ApiResponse>(
+      url: string,
+      body: unknown,
+      config: AxiosRequestConfig = {}
+    ) => {
+      return axios.post<T>(url, body, config);
+    },
+  };
+};
+
+const _axiosPrivate = api(axiosPrivate);
+
+export default api(a);
+export { _axiosPrivate as axiosPrivate };

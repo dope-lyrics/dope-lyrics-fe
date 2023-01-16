@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { fetchLyrics } from "@/api/api";
 import axios from "@/axios/axios";
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref } from "vue";
 
 const lyricsData = ref<any>([]);
 const fetchStatus = ref("");
@@ -49,7 +49,9 @@ function handleMood(event: any) {
   moodSearchInput.value = event.target.value;
 }
 async function findByMood() {
-  const response = await axios.get("lyrics/" + moodSearchInput.value);
+  const response = await axios.get<{ data: any }>(
+    "lyrics/" + moodSearchInput.value
+  );
   lyricsByMood.value = response?.data?.data;
   console.log(response);
 }
