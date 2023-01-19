@@ -1,8 +1,8 @@
 type Callback = (arg?: any) => void;
 
 type ApiResponse = {
-  errorCallback?: Callback;
-  successCallback?: Callback;
+  onError?: Callback;
+  onSuccess?: Callback;
 };
 
 type LoginPayload = {
@@ -11,8 +11,8 @@ type LoginPayload = {
 };
 type Login = {
   payload: LoginPayload;
-  errorCallback?: Callback;
-  successCallback?: Callback;
+  onError?: Callback;
+  onSuccess?: Callback;
 };
 
 export type AddPayload = {
@@ -29,8 +29,8 @@ type Add = {
 
 type Token = {
   refreshToken: string;
-  errorCallback?: Callback;
-  successCallback?: Callback;
+  onError?: Callback;
+  onSuccess?: Callback;
 };
 
 type FetchLyrics = {} & ApiResponse;

@@ -2,7 +2,7 @@ import axios, { axiosPrivate } from "@/axios/axios";
 import Cookies from "js-cookie";
 import type { Login, Add, Token, FetchLyrics } from "@/api/types";
 
-async function login({ payload, errorCallback, successCallback }: Login) {
+async function login({ payload, onError, onSuccess }: Login) {
   try {
     const response = await axios.post<{
       accessToken: string;
@@ -10,17 +10,17 @@ async function login({ payload, errorCallback, successCallback }: Login) {
     }>("/login", payload);
     Cookies.set("access_token", response.data.accessToken);
     Cookies.set("refresh_token", response.data.refreshToken);
-    if (successCallback) successCallback(response);
+    if (onSuccess) onSuccess(response);
   } catch (error) {
     console.error(error);
-    if (errorCallback) errorCallback(error);
+    if (onError) onError(error);
   }
 }
 
 async function token({
   refreshToken,
-  errorCallback,
-  successCallback,
+  onError,
+  onSuccess,
 }: Token): Promise<{ accessToken: string; refreshToken: string } | undefined> {
   try {
     const response = await axios.post<any>("/token", {
@@ -28,32 +28,32 @@ async function token({
     });
     console.log(response);
 
-    if (successCallback) successCallback(response);
+    if (onSuccess) onSuccess(response);
 
     return response.data;
   } catch (error) {
     console.error(error);
-    if (errorCallback) errorCallback();
+    if (onError) onError();
   }
 }
 
-async function add({ payload, errorCallback, successCallback }: Add) {
+async function add({ payload, onError, onSuccess }: Add) {
   try {
     const response = await axiosPrivate.post("lyrics/add", payload);
     console.log("add response : ", add);
-    if (successCallback) successCallback(response);
+    if (onSuccess) onSuccess(response);
   } catch (error) {
     console.error(error);
-    if (errorCallback) errorCallback();
+    if (onError) onError();
   }
 }
 
-async function fetchLyrics({ errorCallback, successCallback }: FetchLyrics) {
+async function fetchLyrics({ onError, onSuccess }: FetchLyrics) {
   try {
     const response = await axios.get<any>("/lyrics");
-    if (successCallback) successCallback(response?.data?.data);
+    if (onSuccess) onSuccess(response?.data?.data);
   } catch (error) {
-    if (errorCallback) errorCallback(error);
+    if (onError) onError(error);
   }
 }
 

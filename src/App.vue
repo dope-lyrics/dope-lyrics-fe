@@ -4,12 +4,12 @@ import "./style.css";
 </script>
 
 <template>
-  <nav>
+  <!-- <nav>
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/login">Login</RouterLink>
     <RouterLink to="/about">About</RouterLink>
     <RouterLink to="/add">Add</RouterLink>
-  </nav>
+  </nav> -->
   <RouterView></RouterView>
 </template>
 

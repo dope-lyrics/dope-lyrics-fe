@@ -78,8 +78,8 @@ function handleSubmit() {
   console.log("submitted payload: ", payload);
   add({
     payload,
-    errorCallback: (error) => {},
-    successCallback: (response) => {},
+    onError: (error) => {},
+    onSuccess: (response) => {},
   });
 }
 </script>
@@ -88,6 +88,10 @@ function handleSubmit() {
   display: flex;
   align-items: flex-start;
   height: 100vh;
+
+  h3 {
+    font-weight: 500;
+  }
 
   @include mobileOrTablet {
     flex-direction: column-reverse;
@@ -121,7 +125,7 @@ function handleSubmit() {
         margin: 0.5rem 0;
       }
       textarea {
-        height: 20rem;
+        height: 8rem;
         width: 100%;
       }
 

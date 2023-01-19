@@ -1,59 +1,36 @@
 <template>
-  <div>
-    <h1>Home</h1>
-    <div>Fetch status : {{ fetchStatus }}</div>
-    <div>
-      <div v-for="lyric in lyricsData">
-        {{ lyric.lyric }}
-      </div>
-    </div>
-
-    <section :style="{ marginTop: '50px' }">
-      <label for="">Find by mood</label>
-      <input type="text" @input="handleMood" />
-      <div>
-        <button @click="findByMood">Search</button>
-      </div>
-      <div>
-        <div v-for="filteredLyric in lyricsByMood">
-          {{ filteredLyric }}
-        </div>
-      </div>
+  <div class="home-container">
+    <section class="heading">
+      <h2>Welcome to <i>Dope Lyrics</i></h2>
+      <h4>Share your favorite lyric with the world!</h4>
+      <h4>And read theirs</h4>
     </section>
+    <hr />
+
+    <Lyrics />
   </div>
 </template>
 <script setup lang="ts">
-import { fetchLyrics } from "@/api/api";
-import axios from "@/axios/axios";
-import { onMounted, ref } from "vue";
-
-const lyricsData = ref<any>([]);
-const fetchStatus = ref("");
-const moodSearchInput = ref("");
-const lyricsByMood = ref<any[]>([]);
-
-onMounted(() => {
-  fetchLyrics({
-    successCallback: (response) => {
-      lyricsData.value = response;
-      fetchStatus.value = "success";
-    },
-    errorCallback: (error) => {
-      fetchStatus.value = error.toString();
-      fetchStatus.value = "fail";
-    },
-  });
-});
-
-function handleMood(event: any) {
-  moodSearchInput.value = event.target.value;
-}
-async function findByMood() {
-  const response = await axios.get<{ data: any }>(
-    "lyrics/" + moodSearchInput.value
-  );
-  lyricsByMood.value = response?.data?.data;
-  console.log(response);
-}
+import Lyrics from "@/components/Lyrics.vue";
 </script>
-<style lang=""></style>
+<style lang="scss" scoped>
+.heading {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    margin-bottom: 4px;
+  }
+  h4 {
+    font-weight: 500;
+  }
+}
+
+.home-container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+</style>
