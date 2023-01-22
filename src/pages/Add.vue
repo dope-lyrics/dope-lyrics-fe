@@ -2,6 +2,7 @@
   <div class="add-lyrics-page">
     <div class="left-side">
       <form class="add-lyrics-form" @submit.prevent="handleSubmit">
+        <RouterLink class="link" to="/">Go to Home</RouterLink>
         <div class="add-lyrics-content">
           <h2>Add Lyrics</h2>
           <h3>
@@ -49,8 +50,9 @@
 </template>
 <script setup lang="ts">
 import { add } from "@/api/api";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import type { AddPayload } from "@/api/types";
+import { RouterLink } from "vue-router";
 
 const formValues = ref<AddPayload>({
   singer: "",
@@ -75,7 +77,7 @@ function handleSubmit() {
     song: formValues.value.song,
   };
 
-  console.log("submitted payload: ", payload);
+  // console.log("submitted payload: ", payload);
   add({
     payload,
     onError: (error) => {},
@@ -142,6 +144,11 @@ function handleSubmit() {
           background-color: #3b82f6;
         }
       }
+    }
+
+    .link {
+      color: #3b82f6;
+      font-weight: bold;
     }
   }
   .right-side {

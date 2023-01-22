@@ -1,3 +1,5 @@
+import type { LoginSchemaType } from "@/pages/Login/types";
+
 type Callback = (arg?: any) => void;
 
 type ApiResponse = {
@@ -5,13 +7,9 @@ type ApiResponse = {
   onSuccess?: Callback;
 };
 
-type LoginPayload = {
-  email: string;
-  password: string;
-};
 type Login = {
-  payload: LoginPayload;
-  onError?: Callback;
+  payload: LoginSchemaType;
+  onError: Callback;
   onSuccess?: Callback;
 };
 

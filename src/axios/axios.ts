@@ -27,7 +27,6 @@ const axiosPrivate = axios.create(commonConfig);
 axiosPrivate.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     // Do something before request is sent
-    console.log("CONFIG: ", config);
     if (!Cookies.get("access_token")) {
       return config;
     }

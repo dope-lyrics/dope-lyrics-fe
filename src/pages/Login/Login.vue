@@ -2,31 +2,54 @@
   <div class="login-page">
     <div class="left-side">
       <form class="login-form" @submit.prevent="handleSubmit">
+        <RouterLink class="link" to="/">Go to Home</RouterLink>
+
         <div class="login-form-content">
           <h2>Welcome back</h2>
           <h3>Enter your details below</h3>
         </div>
-        <div class="login-form-email">
+        <div class="login-form-email" :ref="inputRefs.email">
           <label>Email:</label>
-          <input type="text" name="email" @input="handleChange" />
+          <input
+            type="email"
+            name="email"
+            @input="handleChange"
+            @focus="handleFocus"
+          />
+          <div v-show="errors.email" class="form-error-field">
+            {{ errors.email }}
+          </div>
         </div>
-        <div class="login-form-password">
+        <div class="login-form-password" :ref="inputRefs.password">
           <div class="login-form-password-subtitles">
             <label>Password:</label>
-            <span>
+            <!-- <span>
               <a href="#">Forgot password?</a>
-            </span>
+            </span> -->
           </div>
-          <input type="password" name="password" @input="handleChange" />
+          <input
+            type="password"
+            name="password"
+            @input="handleChange"
+            @focus="handleFocus"
+          />
+          <div v-show="errors.password" class="form-error-field">
+            {{ errors.password }}
+          </div>
         </div>
-        <div class="login-form-checkbox">
+
+        <!-- <div class="login-form-checkbox">
           <input type="checkbox" />
           <label>Remember Me</label>
+        </div> -->
+        <div v-show="errorMessage" class="login-form-error-message">
+          {{ errorMessage }}
         </div>
+
         <div class="login-form-bottom">
           <button>Log In</button>
-          <label>Don't have an account? </label>
-          <a href="#">Sign Up</a>
+          <!-- <label>Don't have an account? </label> -->
+          <!-- <a href="#">Sign Up</a> -->
         </div>
       </form>
     </div>
@@ -36,28 +59,61 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref, reactive, Ref } from "vue";
 import { login } from "@/api/api";
+import { VF } from "@/utils/validateForm.js";
+import { LoginSchema } from "@/pages/Login/types";
+import type { LoginSchemaType } from "@/pages/Login/types";
+import { useRouter, RouterLink, onBeforeRouteLeave } from "vue-router";
+import { store } from "@/store/store";
 
-type FormValues = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-};
+onBeforeRouteLeave((to, from) => {
+  store.requestedFrom = "";
+});
 
-const formValues: FormValues = reactive({
+const router = useRouter();
+
+const formData = reactive({
   email: "",
   password: "",
   rememberMe: false,
 });
+const errors = reactive({
+  email: "",
+  password: "",
+});
+
+const inputRefs: { [key: string]: Ref<HTMLDivElement | undefined> } = {
+  email: ref<HTMLDivElement>(),
+  password: ref<HTMLDivElement>(),
+};
+
+const errorMessage = ref<null | string[] | string[][]>(null);
+
+const { validateForm, onFocus } = VF<LoginSchemaType>({
+  formData,
+  schema: LoginSchema,
+  inputRefs,
+  reactiveErrors: errors,
+});
 
 function handleSubmit() {
-  const payload = {
-    email: formValues.email,
-    password: formValues.password,
-  };
+  const { isFormValid } = validateForm();
+
+  if (!isFormValid) return;
+
   login({
-    payload,
+    payload: formData,
+    onSuccess: (data) => {
+      // debugger;
+      store.user = data.user;
+      store.requestedFrom === "Add"
+        ? router.push({ name: "Add" })
+        : router.push("/");
+    },
+    onError: (error) => {
+      errorMessage.value = error;
+    },
   });
 }
 
@@ -65,8 +121,12 @@ function handleChange(event: Event) {
   const element = event.target as HTMLInputElement;
 
   // @ts-ignore
-  formValues[element.name] =
+  formData[element.name] =
     element.type === "checkbox" ? element.checked : element.value;
+}
+
+function handleFocus(event: Event) {
+  onFocus(event);
 }
 </script>
 
@@ -94,9 +154,15 @@ function handleChange(event: Event) {
       padding: 3rem;
       width: 50%;
       margin: auto;
+
       @include mobileOrTablet {
         margin: 0;
         width: 100%;
+      }
+
+      .link {
+        color: #3b82f6;
+        font-weight: bold;
       }
 
       .login-form-content {
@@ -170,6 +236,12 @@ function handleChange(event: Event) {
           border: none;
           border-radius: 30px;
           background-color: #3b82f6;
+          cursor: pointer;
+
+          &:hover {
+            opacity: 0.7;
+            color: #fff;
+          }
         }
         label {
           opacity: 0.4;
@@ -181,6 +253,19 @@ function handleChange(event: Event) {
         a {
           color: #3b82f6;
         }
+      }
+    }
+
+    .login-form-error-message {
+      font-size: 14px;
+      font-weight: bold;
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 24px;
+      margin: 40px 0;
+
+      @include mobile {
+        margin: 20px 0;
       }
     }
   }

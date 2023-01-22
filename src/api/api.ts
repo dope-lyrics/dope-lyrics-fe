@@ -8,12 +8,14 @@ async function login({ payload, onError, onSuccess }: Login) {
       accessToken: string;
       refreshToken: string;
     }>("/login", payload);
+
     Cookies.set("access_token", response.data.accessToken);
     Cookies.set("refresh_token", response.data.refreshToken);
-    if (onSuccess) onSuccess(response);
-  } catch (error) {
+
+    if (onSuccess) onSuccess(response?.data);
+  } catch (error: any) {
     console.error(error);
-    if (onError) onError(error);
+    if (onError) onError(error?.response?.data?.error || error);
   }
 }
 
@@ -26,7 +28,6 @@ async function token({
     const response = await axios.post<any>("/token", {
       token: refreshToken,
     });
-    console.log(response);
 
     if (onSuccess) onSuccess(response);
 
@@ -40,7 +41,6 @@ async function token({
 async function add({ payload, onError, onSuccess }: Add) {
   try {
     const response = await axiosPrivate.post("lyrics/add", payload);
-    console.log("add response : ", add);
     if (onSuccess) onSuccess(response);
   } catch (error) {
     console.error(error);

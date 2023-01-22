@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body,
+p {
+  margin: 0;
+}
+
+.form-error {
+  input {
+    border: 1px solid #ef4444;
+  }
+  .form-error-field {
+    color: #ef4444;
+    font-size: 14px;
+  }
+}

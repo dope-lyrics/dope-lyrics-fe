@@ -30,31 +30,29 @@ const selectedLyricIndex = ref(0);
 const lyricRefs = ref<any>([]);
 
 function handleRef(el: any, index: number) {
-  lyricRefs.value[index] = el.lyricRef;
+  if (el) {
+    lyricRefs.value[index] = el.lyricRef;
+  }
 }
 
 onMounted(() => {
   fetchLyrics({
     onSuccess: (response) => {
       lyricsData.value = response;
-      console.log("Lyrics data: ", JSON.stringify(response, null, 2));
     },
-    onError: (error) => {},
   });
 });
 
 function handlePrev() {
   if (selectedLyricIndex.value === 0) {
     selectedLyricIndex.value = lyricsData.value.length - 1;
-    (
-      lyricRefs.value.at(selectedLyricIndex.value) as HTMLElement
-    ).scrollIntoView();
+    lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView();
     return;
   }
 
   selectedLyricIndex.value -= 1;
 
-  (lyricRefs.value.at(selectedLyricIndex.value) as HTMLElement).scrollIntoView({
+  lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView({
     behavior: "smooth",
   });
 }
@@ -62,15 +60,12 @@ function handlePrev() {
 function handleNext() {
   if (selectedLyricIndex.value === lyricsData.value.length - 1) {
     selectedLyricIndex.value = 0;
-    (
-      lyricRefs.value.at(selectedLyricIndex.value) as HTMLElement
-    ).scrollIntoView();
+    lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView();
     return;
   }
-
   selectedLyricIndex.value += 1;
 
-  (lyricRefs.value.at(selectedLyricIndex.value) as HTMLElement).scrollIntoView({
+  lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView({
     behavior: "smooth",
   });
 }
