@@ -15,7 +15,9 @@
     "path": "^0.12.7",
     "sass": "^1.57.1",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "zod": "^3.20.2",
+    "zod-validation-error": "^0.3.0"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",
