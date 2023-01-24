@@ -66,6 +66,7 @@ import { LoginSchema } from "@/pages/Login/types";
 import type { LoginSchemaType } from "@/pages/Login/types";
 import { useRouter, RouterLink, onBeforeRouteLeave } from "vue-router";
 import { store } from "@/store/store";
+import { privateRoutes } from "@/router/router";
 
 onBeforeRouteLeave((to, from) => {
   store.requestedFrom = "";
@@ -97,6 +98,21 @@ const { validateForm, onFocus } = VF<LoginSchemaType>({
   reactiveErrors: errors,
 });
 
+function navigate() {
+  if (!store.requestedFrom) {
+    router.push({ name: "Home" });
+    return;
+  }
+
+  const requester = privateRoutes.find(
+    (routeName) => routeName === store.requestedFrom
+  );
+
+  if (requester) {
+    router.push({ name: requester });
+  }
+}
+
 function handleSubmit() {
   const { isFormValid } = validateForm();
 
@@ -105,11 +121,8 @@ function handleSubmit() {
   login({
     payload: formData,
     onSuccess: (data) => {
-      // debugger;
       store.user = data.user;
-      store.requestedFrom === "Add"
-        ? router.push({ name: "Add" })
-        : router.push("/");
+      navigate();
     },
     onError: (error) => {
       errorMessage.value = error;
