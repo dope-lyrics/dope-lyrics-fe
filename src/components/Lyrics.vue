@@ -57,6 +57,7 @@ function handleRef(el: any, index: number) {
     lyricRefs.value[index] = el.lyricRef;
   }
 }
+
 function handlePrev() {
   if (selectedLyricIndex.value === 0) {
     selectedLyricIndex.value = lyricsData.value.length - 1;

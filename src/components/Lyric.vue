@@ -14,7 +14,7 @@
         <div>
           <div class="lyric-footer-title">written by</div>
           <div class="lyric-footer-description">
-            {{ owner?.email || "author" }}
+            {{ owner?.username || "author" }}
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@ export type LyricProp = {
   song: string;
   lyric: string;
   owner: {
-    email: string;
+    username: string;
   };
 };
 

@@ -8,16 +8,16 @@
           <h2>Welcome back</h2>
           <h3>Enter your details below</h3>
         </div>
-        <div class="login-form-email" :ref="inputRefs.email">
-          <label>Email:</label>
+        <div class="login-form-username" :ref="inputRefs.username">
+          <label>Username:</label>
           <input
-            type="email"
-            name="email"
+            type="text"
+            name="username"
             @input="handleChange"
             @focus="handleFocus"
           />
-          <div v-show="errors.email" class="form-error-field">
-            {{ errors.email }}
+          <div v-show="errors.username" class="form-error-field">
+            {{ errors.username }}
           </div>
         </div>
         <div class="login-form-password" :ref="inputRefs.password">
@@ -75,17 +75,17 @@ onBeforeRouteLeave((to, from) => {
 const router = useRouter();
 
 const formData = reactive({
-  email: "",
+  username: "",
   password: "",
   rememberMe: false,
 });
 const errors = reactive({
-  email: "",
+  username: "",
   password: "",
 });
 
 const inputRefs: { [key: string]: Ref<HTMLDivElement | undefined> } = {
-  email: ref<HTMLDivElement>(),
+  username: ref<HTMLDivElement>(),
   password: ref<HTMLDivElement>(),
 };
 
@@ -191,7 +191,7 @@ function handleFocus(event: Event) {
           line-height: 2rem;
         }
       }
-      .login-form-email {
+      .login-form-username {
         label {
           display: block;
           font-size: 1rem;
