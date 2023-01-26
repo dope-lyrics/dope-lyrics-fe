@@ -31,6 +31,11 @@ type Token = {
   onSuccess?: Callback;
 };
 
-type FetchLyrics = {} & ApiResponse;
+type FetchLyrics = {
+  pagination: {
+    page: string;
+    limit: string;
+  };
+} & ApiResponse;
 
 export type { Login, Add, Token, FetchLyrics };

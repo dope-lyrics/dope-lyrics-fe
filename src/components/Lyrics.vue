@@ -14,11 +14,12 @@
         :ref="(el) => handleRef(el, index)"
       />
     </div>
+
     <RightArrow @click="handleNext" />
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { fetchLyrics } from "@/api/api";
 import LeftArrow from "@/components/common/ui/LeftArrow.vue";
 import RightArrow from "@/components/common/ui/RightArrow.vue";
@@ -29,20 +30,33 @@ const lyricsData = ref<LyricProp[]>([]);
 const selectedLyricIndex = ref(0);
 const lyricRefs = ref<any>([]);
 
+// related to pagination
+const hasMore = ref(false);
+const pagination = ref({
+  page: 1,
+  limit: 10,
+});
+const lastFetchedIndex = ref(0);
+//
+
+onMounted(() => {
+  fetchData();
+});
+
+watch(lastFetchedIndex, () => {
+  if (
+    (lastFetchedIndex.value + 1) % pagination.value.limit === 0 &&
+    hasMore.value
+  ) {
+    fetchData(++pagination.value.page);
+  }
+});
+
 function handleRef(el: any, index: number) {
   if (el) {
     lyricRefs.value[index] = el.lyricRef;
   }
 }
-
-onMounted(() => {
-  fetchLyrics({
-    onSuccess: (response) => {
-      lyricsData.value = response;
-    },
-  });
-});
-
 function handlePrev() {
   if (selectedLyricIndex.value === 0) {
     selectedLyricIndex.value = lyricsData.value.length - 1;
@@ -63,10 +77,30 @@ function handleNext() {
     lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView();
     return;
   }
+
+  // to avoid not fetching data when going previous lyrics.
+  if (selectedLyricIndex.value >= lastFetchedIndex.value) {
+    lastFetchedIndex.value += 1;
+  }
+
   selectedLyricIndex.value += 1;
 
   lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView({
     behavior: "smooth",
+  });
+}
+
+function fetchData(page?: number) {
+  let _page = page || pagination.value.page;
+  fetchLyrics({
+    pagination: {
+      page: _page.toString(),
+      limit: pagination.value.limit.toString(),
+    },
+    onSuccess: (response) => {
+      lyricsData.value = lyricsData.value.concat(response?.lyrics);
+      hasMore.value = response?.hasMore;
+    },
   });
 }
 </script>

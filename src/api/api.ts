@@ -48,9 +48,13 @@ async function add({ payload, onError, onSuccess }: Add) {
   }
 }
 
-async function fetchLyrics({ onError, onSuccess }: FetchLyrics) {
+async function fetchLyrics({ pagination, onError, onSuccess }: FetchLyrics) {
+  const searchParams = new URLSearchParams();
+  searchParams.append("page", pagination.page || "1");
+  searchParams.append("limit", pagination.limit || "10");
+
   try {
-    const response = await axios.get<any>("/lyrics");
+    const response = await axios.get<any>(`/lyrics?${searchParams.toString()}`);
     if (onSuccess) onSuccess(response?.data?.data);
   } catch (error) {
     if (onError) onError(error);
