@@ -33,7 +33,7 @@ const lyricRefs = ref<any>([]);
 // related to pagination
 const hasMore = ref(false);
 const pagination = ref({
-  page: 1,
+  page: 0, // 0 index based pagination
   limit: 10,
 });
 const lastFetchedIndex = ref(0);
