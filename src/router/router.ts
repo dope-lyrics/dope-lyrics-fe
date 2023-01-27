@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { store } from "@/store/store";
 import { routes, privateRoutes } from "@/router/routes";
+import { Auth } from "@/utils/auth";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,7 +12,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  const isAuthenticated = store.user;
+  const { isAuthenticated } = Auth();
 
   // if user already logged in, redirect to /alreadyLoggedIn
   // We might delete it later

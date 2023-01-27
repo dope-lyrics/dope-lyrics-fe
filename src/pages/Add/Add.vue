@@ -146,7 +146,7 @@ const { validateForm, onFocus } = VF<AddSchemaType>({
 function handleChange(event: Event) {
   const element = event.target as HTMLInputElement;
   // @ts-ignore
-  formData[element.name] = element.value;
+  formData.value[element.name] = element.value;
 }
 
 function handleFocus(event: Event) {

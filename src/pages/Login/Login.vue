@@ -111,7 +111,6 @@ function handleSubmit() {
   login({
     payload: formData,
     onSuccess: (data) => {
-      store.user = data.user;
       navigate();
     },
     onError: (error) => {

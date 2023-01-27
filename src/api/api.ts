@@ -1,16 +1,22 @@
 import axios, { axiosPrivate } from "@/axios/axios";
 import Cookies from "js-cookie";
 import type { Login, Add, Token, FetchLyrics } from "@/api/types";
+import { store } from "@/store/store";
 
 async function login({ payload, onError, onSuccess }: Login) {
   try {
     const response = await axios.post<{
       accessToken: string;
       refreshToken: string;
+      user: any;
     }>("/login", payload);
 
     Cookies.set("access_token", response.data.accessToken);
     Cookies.set("refresh_token", response.data.refreshToken);
+
+    store.user = response?.data?.user;
+
+    if (store.user) localStorage.setItem("user", JSON.stringify(store.user));
 
     if (onSuccess) onSuccess(response?.data);
   } catch (error: any) {
