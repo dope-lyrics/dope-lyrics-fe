@@ -1,6 +1,6 @@
 import axios, { axiosPrivate } from "@/axios/axios";
 import Cookies from "js-cookie";
-import type { Login, Add, Token, FetchLyrics } from "@/api/types";
+import type { Login, Add, Token, FetchLyrics, ApiResponse } from "@/api/types";
 import { store } from "@/store/store";
 
 async function login({ payload, onError, onSuccess }: Login) {
@@ -22,6 +22,22 @@ async function login({ payload, onError, onSuccess }: Login) {
   } catch (error: any) {
     console.error(error);
     if (onError) onError(error?.response?.data?.error || error);
+  }
+}
+
+async function logout({ onError, onSuccess }: ApiResponse) {
+  try {
+    axiosPrivate.post<any>("/logout").finally(() => {
+      Cookies.remove("access_token");
+      Cookies.remove("refresh_token");
+      localStorage.removeItem("user");
+      store.user = null;
+    });
+
+    if (onSuccess) onSuccess();
+  } catch (error) {
+    console.error(error);
+    if (onError) onError(error);
   }
 }
 
@@ -67,4 +83,4 @@ async function fetchLyrics({ pagination, onError, onSuccess }: FetchLyrics) {
   }
 }
 
-export { login, add, token, fetchLyrics };
+export { login, logout, add, token, fetchLyrics };

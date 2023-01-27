@@ -1,4 +1,5 @@
 <template>
+  <Header></Header>
   <div class="home-container">
     <section class="heading">
       <h2>
@@ -16,20 +17,12 @@
     <hr />
 
     <Lyrics />
-
-    <section :style="{ marginTop: '60px' }">
-      <RouterLink to="/login">LOGIN</RouterLink>
-
-      <RouterLink to="/add">
-        <h3>Start sharing the best lyrics of your pick!</h3>
-      </RouterLink>
-    </section>
   </div>
 </template>
 <script setup lang="ts">
 import Lyrics from "@/components/Lyrics.vue";
+import Header from "@/components/common/Header.vue";
 import { store } from "@/store/store";
-import { RouterLink } from "vue-router";
 </script>
 <style lang="scss" scoped>
 .heading {
@@ -50,5 +43,6 @@ import { RouterLink } from "vue-router";
 .home-container {
   max-width: 1024px;
   margin: 0 auto;
+  padding-top: 66px;
 }
 </style>

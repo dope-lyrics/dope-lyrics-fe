@@ -3,7 +3,7 @@ import type { AddSchemaType } from "@/pages/Add/types";
 
 type Callback = (arg?: any) => void;
 
-type ApiResponse = {
+export type ApiResponse = {
   onError?: Callback;
   onSuccess?: Callback;
 };

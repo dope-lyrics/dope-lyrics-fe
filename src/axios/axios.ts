@@ -85,7 +85,7 @@ const api = (axios: AxiosInstance) => {
     },
     post: <T extends ApiResponse>(
       url: string,
-      body: unknown,
+      body?: unknown,
       config: AxiosRequestConfig = {}
     ) => {
       return axios.post<T>(url, body, config);
