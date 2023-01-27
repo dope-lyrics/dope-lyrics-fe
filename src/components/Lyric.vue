@@ -64,6 +64,7 @@ defineExpose({ lyricRef });
       font-size: 16px;
       font-weight: bold;
       font-family: "Kalam", cursive;
+      white-space: pre-line;
     }
     .singer {
       font-size: 12px;

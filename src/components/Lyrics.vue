@@ -1,7 +1,7 @@
 <template>
   <div class="lyrics-container">
     <LeftArrow @click="handlePrev" />
-    <div class="lyric-content">
+    <div class="lyrics-content">
       <Lyric
         v-for="(item, index) in lyricsData"
         key="item.id"
@@ -118,7 +118,7 @@ function fetchData(page?: number) {
     margin-top: 20px;
   }
 
-  .lyric-content {
+  .lyrics-content {
     display: flex;
     overflow: hidden;
   }

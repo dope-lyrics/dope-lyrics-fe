@@ -3,10 +3,10 @@
     <section class="heading">
       <h2>
         <div
-          v-if="store?.user?.email"
+          v-if="store?.user?.username"
           :style="{ fontWeight: 'bold', color: 'blue' }"
         >
-          Hi {{ store?.user.email }}
+          Hi {{ store?.user.username }}
         </div>
         Welcome to <i>Dope Lyrics</i>
       </h2>

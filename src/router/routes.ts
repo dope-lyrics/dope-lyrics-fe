@@ -1,7 +1,7 @@
 import Home from "@/pages/Home.vue";
 import About from "@/pages/About.vue";
 import Login from "@/pages/Login/Login.vue";
-import Add from "@/pages/Add.vue";
+import Add from "@/pages/Add/Add.vue";
 import AlreadyLoggedIn from "@/pages/AlreadyLoggedIn.vue";
 import NotFound from "@/pages/NotFound.vue";
 

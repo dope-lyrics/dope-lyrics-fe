@@ -2,7 +2,7 @@ import { reactive } from "vue";
 
 type User = {
   user: null | {
-    email: string;
+    username: string;
   };
   requestedFrom: string;
 };

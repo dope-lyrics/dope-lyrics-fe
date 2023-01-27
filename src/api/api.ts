@@ -42,9 +42,9 @@ async function add({ payload, onError, onSuccess }: Add) {
   try {
     const response = await axiosPrivate.post("lyrics/add", payload);
     if (onSuccess) onSuccess(response);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    if (onError) onError();
+    if (onError) onError(error?.response?.data?.error || error);
   }
 }
 

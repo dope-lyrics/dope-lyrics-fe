@@ -23,9 +23,6 @@
         <div class="login-form-password" :ref="inputRefs.password">
           <div class="login-form-password-subtitles">
             <label>Password:</label>
-            <!-- <span>
-              <a href="#">Forgot password?</a>
-            </span> -->
           </div>
           <input
             type="password"
@@ -38,19 +35,11 @@
           </div>
         </div>
 
-        <!-- <div class="login-form-checkbox">
-          <input type="checkbox" />
-          <label>Remember Me</label>
-        </div> -->
         <div v-show="errorMessage" class="login-form-error-message">
           {{ errorMessage }}
         </div>
 
-        <div class="login-form-bottom">
-          <button>Log In</button>
-          <!-- <label>Don't have an account? </label> -->
-          <!-- <a href="#">Sign Up</a> -->
-        </div>
+        <FormButton>Log In</FormButton>
       </form>
     </div>
     <div class="right-side">
@@ -67,6 +56,7 @@ import type { LoginSchemaType } from "@/pages/Login/types";
 import { useRouter, RouterLink, onBeforeRouteLeave } from "vue-router";
 import { store } from "@/store/store";
 import { privateRoutes } from "@/router/router";
+import FormButton from "@/components/common/ui/FormButton.vue";
 
 onBeforeRouteLeave((to, from) => {
   store.requestedFrom = "";
@@ -237,48 +227,6 @@ function handleFocus(event: Event) {
           font-size: 1rem;
           line-height: 1.5rem;
         }
-      }
-      .login-form-bottom {
-        text-align: center;
-        margin: 1rem 0.2rem 1rem 0.2rem;
-        button {
-          display: block;
-          margin: 1rem auto;
-          height: 3rem;
-          width: 100%;
-          border: none;
-          border-radius: 30px;
-          background-color: #3b82f6;
-          cursor: pointer;
-
-          &:hover {
-            opacity: 0.7;
-            color: #fff;
-          }
-        }
-        label {
-          opacity: 0.4;
-          color: #110f24;
-          font-size: 1rem;
-          line-height: 1.5rem;
-          overflow-x: hidden;
-        }
-        a {
-          color: #3b82f6;
-        }
-      }
-    }
-
-    .login-form-error-message {
-      font-size: 14px;
-      font-weight: bold;
-      border: 1px solid #ef4444;
-      color: #ef4444;
-      padding: 24px;
-      margin: 40px 0;
-
-      @include mobile {
-        margin: 20px 0;
       }
     }
   }

@@ -1,4 +1,5 @@
 import type { LoginSchemaType } from "@/pages/Login/types";
+import type { AddSchemaType } from "@/pages/Add/types";
 
 type Callback = (arg?: any) => void;
 
@@ -9,9 +10,7 @@ type ApiResponse = {
 
 type Login = {
   payload: LoginSchemaType;
-  onError: Callback;
-  onSuccess?: Callback;
-};
+} & ApiResponse;
 
 export type AddPayload = {
   singer: string;
@@ -22,7 +21,7 @@ export type AddPayload = {
 };
 
 type Add = {
-  payload: AddPayload;
+  payload: AddSchemaType;
 } & ApiResponse;
 
 type Token = {
