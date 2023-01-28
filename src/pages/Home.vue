@@ -1,18 +1,19 @@
 <template>
-  <Header></Header>
   <div class="home-container">
+    <Header></Header>
+
     <section class="heading">
-      <h2>
-        <div
-          v-if="store?.user?.username"
-          :style="{ fontWeight: 'bold', color: 'blue' }"
-        >
-          Hi {{ store?.user.username }}
-        </div>
-        Welcome to <i>Dope Lyrics</i>
-      </h2>
-      <h4>Share your favorite lyric with the world!</h4>
-      <h4>And read theirs</h4>
+      <i18n-t keypath="homepage.welcome" tag="h3">
+        <template v-slot:name>
+          <i :style="{ color: '#ef4444' }">Dope Lyrics</i>
+        </template>
+        <template v-slot:title>
+          <span :style="{ fontWeight: 'bold', color: 'blue' }">
+            {{ store?.user?.username }}</span
+          >
+        </template>
+      </i18n-t>
+      <h4>{{ t("homepage.description") }}</h4>
     </section>
     <hr />
 
@@ -20,12 +21,17 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import Lyrics from "@/components/Lyrics.vue";
 import Header from "@/components/common/Header.vue";
 import { store } from "@/store/store";
+const { t } = useI18n();
 </script>
 <style lang="scss" scoped>
 .heading {
+  padding: 0 24px;
+  margin: 40px 0;
+
   h1,
   h2,
   h3,
