@@ -8,11 +8,13 @@
       </div>
       <div class="lyric-footer">
         <div>
-          <div class="lyric-footer-title">mood</div>
+          <div class="lyric-footer-title">{{ t("homepage.lyrics.mood") }}</div>
           <div class="lyric-footer-description">{{ mood }}</div>
         </div>
         <div>
-          <div class="lyric-footer-title">written by</div>
+          <div class="lyric-footer-title">
+            {{ t("homepage.lyrics.writtenBy") }}
+          </div>
           <div class="lyric-footer-description">
             {{ owner?.username || "author" }}
           </div>
@@ -24,6 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 export type LyricProp = {
   singer: string;
@@ -35,6 +38,8 @@ export type LyricProp = {
     username: string;
   };
 };
+
+const { t } = useI18n();
 
 const lyricRef = ref();
 

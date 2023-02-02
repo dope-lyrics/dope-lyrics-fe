@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { token } from "@/api/api";
+import { i18n } from "@/i18n";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
@@ -14,16 +15,19 @@ const commonConfig = {
 const a = axios.create(commonConfig);
 const axiosPrivate = axios.create(commonConfig);
 
-// a.interceptors.request.use(
-//   async function (config) {
-//     return config;
-//   },
-//   function (error) {
-//     Promise.reject(error);
-//   }
-// );
+a.interceptors.request.use(
+  async function (config: AxiosRequestConfig) {
+    // @ts-ignore
+    config.headers["Accept-Language"] =
+      Cookies.get("lang") || i18n.global.locale.value;
 
-// Add a request interceptor
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
 axiosPrivate.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     // Do something before request is sent
@@ -49,6 +53,9 @@ axiosPrivate.interceptors.request.use(
     }
     // @ts-ignore
     config.headers["authorization"] = `Bearer ${Cookies.get("access_token")}`;
+    // @ts-ignore
+    config.headers["Accept-Language"] =
+      Cookies.get("lang") || i18n.global.locale.value;
     return config;
   },
   function (error) {

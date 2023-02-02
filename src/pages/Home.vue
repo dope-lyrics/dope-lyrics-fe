@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <Header></Header>
+    <Header />
 
     <section class="heading">
       <i18n-t keypath="homepage.welcome" tag="h3">
