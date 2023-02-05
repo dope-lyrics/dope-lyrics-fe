@@ -16,8 +16,7 @@ const a = axios.create(commonConfig);
 const axiosPrivate = axios.create(commonConfig);
 
 a.interceptors.request.use(
-  async function (config: AxiosRequestConfig) {
-    // @ts-ignore
+  async function (config: any) {
     config.headers["Accept-Language"] =
       CookieManager.get.lang() || i18n.global.locale.value;
 
@@ -29,7 +28,7 @@ a.interceptors.request.use(
 );
 
 axiosPrivate.interceptors.request.use(
-  async function (config: AxiosRequestConfig) {
+  async function (config: any) {
     // Do something before request is sent
     if (!CookieManager.get.accessToken()) {
       return config;
@@ -52,13 +51,13 @@ axiosPrivate.interceptors.request.use(
         CookieManager.set.refreshToken(newTokens.refreshToken);
       }
     }
-    // @ts-ignore
     config.headers[
       "authorization"
     ] = `Bearer ${CookieManager.get.accessToken()}`;
-    // @ts-ignore
+
     config.headers["Accept-Language"] =
       CookieManager.get.lang() || i18n.global.locale.value;
+
     return config;
   },
   function (error) {
