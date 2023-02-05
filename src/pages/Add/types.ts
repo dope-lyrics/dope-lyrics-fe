@@ -10,7 +10,8 @@ const AddSchema = z.object({
     .min(1, { message: localizationMessages.common.validation.cantBeEmpty }),
   lyric: z
     .string()
-    .min(20, { message: localizationMessages.add.form.validation.lyric }),
+    .min(20, { message: localizationMessages.add.form.validation.lyricMin })
+    .max(144, { message: localizationMessages.add.form.validation.lyricMax }),
   language: z.string().optional(),
   mood: z
     .string()

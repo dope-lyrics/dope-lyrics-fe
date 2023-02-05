@@ -59,6 +59,7 @@
             @input="handleChange"
             @focus="handleFocus"
             :value="formData.lyric"
+            maxlength="144"
           ></textarea>
           <div v-show="errors.lyric" class="form-error-field">
             {{ errors.lyric }}
@@ -84,7 +85,7 @@
           class="login-form-success-message"
           :class="{ show: showSuccessMessage }"
         >
-          {{ t("add.form.message.success") }}
+          {{ t("add.message.success") }}
         </div>
 
         <div v-show="errorMessage" class="login-form-error-message">

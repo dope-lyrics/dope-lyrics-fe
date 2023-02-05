@@ -44,7 +44,8 @@ const en = {
         save: "Save",
       },
       validation: {
-        lyric: "Lyric must be at least 20 character",
+        lyricMin: "Lyric must be at least 20 characters",
+        lyricMax: "Lyric can be at most 144 characters.",
       },
     },
     message: {

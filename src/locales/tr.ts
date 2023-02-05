@@ -26,8 +26,8 @@ const tr = {
       password: "Şifre",
       login: "Giriş yap",
       validation: {
-        username: "Kullanıcı adı en az 8 karakter içermelidir",
-        password: "Şifre en az 8 karakter içermelidir",
+        username: "Kullanıcı adı en az 6 karakter içermelidir",
+        password: "Şifre en az 3 karakter içermelidir",
       },
     },
   },
@@ -44,7 +44,8 @@ const tr = {
         save: "Kaydet",
       },
       validation: {
-        lyric: "Şarkı sözü en az 20 karakter olmalıdır.",
+        lyricMin: "Şarkı sözü en az 20 karakter olmalıdır.",
+        lyricMax: "Şarkı sözü en fazla 144 karakter olabilir.",
       },
     },
     message: {
