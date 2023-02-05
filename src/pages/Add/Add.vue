@@ -94,7 +94,7 @@
       </form>
     </div>
     <div class="right-side">
-      <img src="src/assets/images/add-lyrics-image.jpg" />
+      <img src="@/assets/images/add-lyrics-image.jpg" />
     </div>
   </div>
 </template>
