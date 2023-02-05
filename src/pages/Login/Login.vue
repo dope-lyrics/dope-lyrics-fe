@@ -2,14 +2,16 @@
   <div class="login-page">
     <div class="left-side">
       <form class="login-form" @submit.prevent="handleSubmit">
-        <RouterLink class="link" to="/">Go to Home</RouterLink>
+        <RouterLink class="link" to="/">{{
+          t("common.backToHome")
+        }}</RouterLink>
 
         <div class="login-form-content">
-          <h2>Welcome back</h2>
-          <h3>Enter your details below</h3>
+          <h2>{{ t("login.welcomeBack") }}</h2>
+          <h3>{{ t("login.enterDetails") }}</h3>
         </div>
         <div class="login-form-username" :ref="inputRefs.username">
-          <label>Username:</label>
+          <label>{{ t("login.form.username") }}</label>
           <input
             type="text"
             name="username"
@@ -22,7 +24,7 @@
         </div>
         <div class="login-form-password" :ref="inputRefs.password">
           <div class="login-form-password-subtitles">
-            <label>Password:</label>
+            <label>{{ t("login.form.password") }}</label>
           </div>
           <input
             type="password"
@@ -39,7 +41,7 @@
           {{ errorMessage }}
         </div>
 
-        <FormButton>Log In</FormButton>
+        <FormButton>{{ t("login.form.login") }}</FormButton>
       </form>
     </div>
     <div class="right-side">
@@ -55,14 +57,16 @@ import { LoginSchema } from "@/pages/Login/types";
 import type { LoginSchemaType } from "@/pages/Login/types";
 import { useRouter, RouterLink, onBeforeRouteLeave } from "vue-router";
 import { store } from "@/store/store";
-import { privateRoutes } from "@/router/router";
+import { privateRoutes } from "@/router/routes";
 import FormButton from "@/components/common/ui/FormButton.vue";
+import { useI18n } from "vue-i18n";
 
 onBeforeRouteLeave((to, from) => {
   store.requestedFrom = "";
 });
 
 const router = useRouter();
+const { t } = useI18n();
 
 const formData = reactive({
   username: "",

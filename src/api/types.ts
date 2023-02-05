@@ -12,14 +12,6 @@ type Login = {
   payload: LoginSchemaType;
 } & ApiResponse;
 
-export type AddPayload = {
-  singer: string;
-  song: string;
-  lyric: string;
-  mood?: string;
-  language: "en" | "tr";
-};
-
 type Add = {
   payload: AddSchemaType;
 } & ApiResponse;

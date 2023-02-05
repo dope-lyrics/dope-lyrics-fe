@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { token } from "@/api/api";
 import { i18n } from "@/i18n";
+import { CookieManager } from "@/utils/CookieManager";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
@@ -19,7 +19,7 @@ a.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     // @ts-ignore
     config.headers["Accept-Language"] =
-      Cookies.get("lang") || i18n.global.locale.value;
+      CookieManager.get.lang() || i18n.global.locale.value;
 
     return config;
   },
@@ -31,31 +31,34 @@ a.interceptors.request.use(
 axiosPrivate.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     // Do something before request is sent
-    if (!Cookies.get("access_token")) {
+    if (!CookieManager.get.accessToken()) {
       return config;
     }
 
     const currentDate = new Date();
     const decodedToken: { exp: number } = jwt_decode(
-      Cookies.get("access_token") as string
+      CookieManager.get.accessToken() as string
     );
+
     const isTokenExpired = decodedToken.exp * 1000 < currentDate.getTime();
 
     if (isTokenExpired) {
       const newTokens = await token({
-        refreshToken: Cookies.get("refresh_token") || "",
+        refreshToken: CookieManager.get.refreshToken() || "",
       });
 
       if (newTokens) {
-        Cookies.set("access_token", newTokens.accessToken);
-        Cookies.set("refresh_token", newTokens.refreshToken);
+        CookieManager.set.accessToken(newTokens.accessToken);
+        CookieManager.set.refreshToken(newTokens.refreshToken);
       }
     }
     // @ts-ignore
-    config.headers["authorization"] = `Bearer ${Cookies.get("access_token")}`;
+    config.headers[
+      "authorization"
+    ] = `Bearer ${CookieManager.get.accessToken()}`;
     // @ts-ignore
     config.headers["Accept-Language"] =
-      Cookies.get("lang") || i18n.global.locale.value;
+      CookieManager.get.lang() || i18n.global.locale.value;
     return config;
   },
   function (error) {

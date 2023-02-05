@@ -2,17 +2,16 @@
   <div class="add-lyrics-page">
     <div class="left-side">
       <form class="add-lyrics-form" @submit.prevent="handleSubmit">
-        <RouterLink class="link" to="/">Go to Home</RouterLink>
+        <RouterLink class="link" to="/">{{
+          t("common.backToHome")
+        }}</RouterLink>
         <div class="add-lyrics-content">
-          <h2>Add Lyrics</h2>
-          <h3>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi,
-            esse.
-          </h3>
+          <h2>{{ t("add.addLyrics") }}</h2>
+          <h3>{{ t("add.description") }}</h3>
         </div>
 
         <div class="add-lyrics-singer" :ref="inputRefs.singer">
-          <label>Singer:</label>
+          <label>{{ t("add.form.singer") }}</label>
           <input
             type="text"
             name="singer"
@@ -25,7 +24,7 @@
           </div>
         </div>
         <div class="add-lyrics-song-name" :ref="inputRefs.song">
-          <label>Song Name:</label>
+          <label>{{ t("add.form.songName") }}</label>
           <input
             type="text"
             name="song"
@@ -39,7 +38,7 @@
         </div>
 
         <div class="add-lyrics-mood" :ref="inputRefs.mood">
-          <label>Mood:</label>
+          <label>{{ t("add.form.mood") }}</label>
           <input
             type="text"
             name="mood"
@@ -53,7 +52,7 @@
         </div>
 
         <div class="add-lyrics-song-lyrics" :ref="inputRefs.lyric">
-          <label>Lyrics:</label>
+          <label>{{ t("add.form.lyrics") }}</label>
           <textarea
             type="text"
             name="lyric"
@@ -67,7 +66,7 @@
         </div>
 
         <div class="add-lyrics-song-language" :ref="inputRefs.language">
-          <label>Language:</label>
+          <label>{{ t("add.form.language") }}</label>
           <select
             name="language"
             @change="handleChange"
@@ -85,13 +84,13 @@
           class="login-form-success-message"
           :class="{ show: showSuccessMessage }"
         >
-          Lyric has been added successfully!
+          {{ t("add.form.message.success") }}
         </div>
 
         <div v-show="errorMessage" class="login-form-error-message">
           {{ errorMessage }}
         </div>
-        <FormButton>Save</FormButton>
+        <FormButton>{{ t("add.form.button.save") }}</FormButton>
       </form>
     </div>
     <div class="right-side">
@@ -106,7 +105,9 @@ import { add } from "@/api/api";
 import { AddSchema, AddSchemaType } from "@/pages/Add/types";
 import { VF } from "@/utils/validateForm.js";
 import FormButton from "@/components/common/ui/FormButton.vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const initialData = {
   singer: "",
   song: "",

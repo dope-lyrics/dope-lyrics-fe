@@ -1,7 +1,7 @@
 import axios, { axiosPrivate } from "@/axios/axios";
-import Cookies from "js-cookie";
 import type { Login, Add, Token, FetchLyrics, ApiResponse } from "@/api/types";
 import { store } from "@/store/store";
+import { CookieManager } from "@/utils/CookieManager";
 
 async function login({ payload, onError, onSuccess }: Login) {
   try {
@@ -11,8 +11,8 @@ async function login({ payload, onError, onSuccess }: Login) {
       user: any;
     }>("/login", payload);
 
-    Cookies.set("access_token", response.data.accessToken);
-    Cookies.set("refresh_token", response.data.refreshToken);
+    CookieManager.set.accessToken(response.data.accessToken);
+    CookieManager.set.refreshToken(response.data.refreshToken);
 
     store.user = response?.data?.user;
 
@@ -28,9 +28,11 @@ async function login({ payload, onError, onSuccess }: Login) {
 async function logout({ onError, onSuccess }: ApiResponse) {
   try {
     axiosPrivate.post<any>("/logout").finally(() => {
-      Cookies.remove("access_token");
-      Cookies.remove("refresh_token");
+      CookieManager.remove.accessToken();
+      CookieManager.remove.refreshToken();
+
       localStorage.removeItem("user");
+
       store.user = null;
     });
 

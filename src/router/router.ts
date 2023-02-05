@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { store } from "@/store/store";
-import { routes, privateRoutes } from "@/router/routes";
+import { routes } from "@/router/routes";
 import { Auth } from "@/utils/auth";
 
 const router = createRouter({
@@ -36,4 +36,4 @@ router.beforeEach((to, from) => {
   return true;
 });
 
-export { router, privateRoutes };
+export { router };
