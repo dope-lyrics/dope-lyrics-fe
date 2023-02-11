@@ -1,23 +1,25 @@
 <template>
   <div class="home-container">
-    <Header />
+    <div>
+      <Header />
 
-    <section class="heading">
-      <i18n-t keypath="homepage.welcome" tag="h3">
-        <template v-slot:name>
-          <i :style="{ color: '#ef4444' }">Dope Lyrics</i>
-        </template>
-        <template v-slot:title>
-          <span :style="{ fontWeight: 'bold', color: 'blue' }">
-            {{ store?.user?.username }}</span
-          >
-        </template>
-      </i18n-t>
-      <h4>{{ t("homepage.description") }}</h4>
-    </section>
-    <hr />
+      <section class="heading">
+        <i18n-t keypath="homepage.welcome" tag="h3">
+          <template v-slot:name>
+            <i :style="{ color: '#ef4444' }">Dope Lyrics</i>
+          </template>
+          <template v-slot:title>
+            <span :style="{ fontWeight: 'bold', color: 'blue' }">
+              {{ store?.user?.username }}</span
+            >
+          </template>
+        </i18n-t>
+        <h4>{{ t("homepage.description") }}</h4>
+      </section>
+      <hr />
 
-    <Lyrics />
+      <Lyrics />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -47,8 +49,21 @@ const { t } = useI18n();
 }
 
 .home-container {
-  max-width: 1024px;
-  margin: 0 auto;
-  padding-top: 66px;
+  background: #d9a7c7;
+  background: -webkit-linear-gradient(to right, #d9a7c7, #fffcdc);
+  background: linear-gradient(to right, #d9a7c7, #fffcdc);
+  height: 100%;
+
+  > *:first-child {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding-top: 66px;
+  }
+
+  hr {
+    border-top: 1px solid #7b25cd40;
+    border-bottom: 0;
+    margin: 0;
+  }
 }
 </style>

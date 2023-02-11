@@ -44,10 +44,11 @@ function handleLogout() {
 
   nav {
     display: flex;
-    background-color: #fcf6f5ff;
+    background-color: #d5a9a263;
     padding: 24px;
     justify-content: flex-end;
     gap: 24px;
+    border: 1px solid #3095d378;
 
     > a {
       font-weight: bold;
