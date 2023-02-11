@@ -1,7 +1,9 @@
 <template>
   <div class="lyrics-container">
-    <span v-if="isLoading">Loading...</span>
-    <span v-else-if="isError">Error: {{ error?.message }}</span>
+    <span v-if="isLoading">{{ t("common.loading") }}</span>
+    <span v-else-if="isError"
+      >{{ t("common.error") }}: {{ error?.message }}</span
+    >
 
     <template v-else-if="lyricData">
       <LeftArrow @click="handlePrev" />
@@ -32,6 +34,9 @@ import Lyric from "@/components/Lyric.vue";
 import type { LyricProp } from "@/components/Lyric.vue";
 import { useInfiniteQuery } from "@tanstack/vue-query";
 import { queryClient } from "@/main";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const selectedLyricIndex = ref(0);
 const lyricRefs = ref<any>([]);

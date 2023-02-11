@@ -1,5 +1,7 @@
 const tr = {
   common: {
+    loading: "Yükleniyor...",
+    error: "Hata:",
     backToHome: "Anasayfaya dön",
     validation: {
       cantBeEmpty: "Bu alan boş olamaz!",

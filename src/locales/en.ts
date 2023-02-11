@@ -1,5 +1,7 @@
 const en = {
   common: {
+    loading: "Loading...",
+    error: "Error:",
     backToHome: "Back to homepage",
     validation: {
       cantBeEmpty: "Can not be empty",
