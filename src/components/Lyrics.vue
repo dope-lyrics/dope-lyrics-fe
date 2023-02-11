@@ -1,46 +1,69 @@
 <template>
   <div class="lyrics-container">
-    <LeftArrow @click="handlePrev" />
-    <div class="lyrics-content">
-      <Lyric
-        v-for="(item, index) in lyricsData"
-        key="item.id"
-        :singer="item.singer"
-        :mood="item.mood"
-        :language="item.language"
-        :song="item.song"
-        :lyric="item.lyric"
-        :owner="item?.owner"
-        :ref="(el) => handleRef(el, index)"
-      />
-    </div>
+    <span v-if="isLoading">Loading...</span>
+    <span v-else-if="isError">Error: {{ error?.message }}</span>
 
-    <RightArrow @click="handleNext" />
+    <template v-else-if="lyricData">
+      <LeftArrow @click="handlePrev" />
+      <div class="lyrics-content">
+        <Lyric
+          v-for="(item, index) in lyricData"
+          :key="item._id"
+          :singer="item.singer"
+          :mood="item.mood"
+          :language="item.language"
+          :song="item.song"
+          :lyric="item.lyric"
+          :owner="item?.owner"
+          :ref="(el) => handleRef(el, index)"
+        />
+      </div>
+
+      <RightArrow @click="handleNext" />
+    </template>
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { fetchLyrics } from "@/api/api";
 import LeftArrow from "@/components/common/ui/LeftArrow.vue";
 import RightArrow from "@/components/common/ui/RightArrow.vue";
 import Lyric from "@/components/Lyric.vue";
 import type { LyricProp } from "@/components/Lyric.vue";
+import { useInfiniteQuery } from "@tanstack/vue-query";
+import { queryClient } from "@/main";
 
-const lyricsData = ref<LyricProp[]>([]);
 const selectedLyricIndex = ref(0);
 const lyricRefs = ref<any>([]);
-
-// related to pagination
+const lyricData = ref<LyricProp[]>([]);
 const hasMore = ref(false);
+
+onMounted(() => {
+  lyricData.value = queryClient.getQueryData(["lyrics"]) || [];
+});
+
 const pagination = ref({
   page: 0, // 0 index based pagination
   limit: 10,
 });
 const lastFetchedIndex = ref(0);
-//
 
-onMounted(() => {
-  fetchData();
+const { isLoading, isError, data, error, fetchNextPage } = useInfiniteQuery<
+  Awaited<ReturnType<typeof fetchLyrics>>,
+  { message: string }
+>({
+  refetchInterval: 10000 * 60,
+  staleTime: 5000,
+  queryKey: ["lyrics"],
+  queryFn: () =>
+    fetchLyrics({
+      page: pagination.value.page,
+      limit: pagination.value.limit,
+    }),
+  getNextPageParam: (lastPage, allPages) => {
+    hasMore.value = lastPage.hasMore;
+    return lastPage.hasMore || undefined;
+  },
 });
 
 watch(lastFetchedIndex, () => {
@@ -48,8 +71,27 @@ watch(lastFetchedIndex, () => {
     (lastFetchedIndex.value + 1) % pagination.value.limit === 0 &&
     hasMore.value
   ) {
-    fetchData(++pagination.value.page);
+    fetchNextPage({
+      pageParam: {
+        page: ++pagination.value.page,
+        limit: pagination.value.limit,
+      },
+    });
   }
+});
+
+watch(data, () => {
+  const pages = data.value?.pages;
+
+  if (!pages) return;
+
+  lyricData.value =
+    pagination.value.page === 0
+      ? pages[0].data
+      : [...lyricData.value, ...pages.at(-1)?.data];
+
+  // update cache
+  queryClient.setQueryData(["lyrics"], () => lyricData.value);
 });
 
 function handleRef(el: any, index: number) {
@@ -60,7 +102,7 @@ function handleRef(el: any, index: number) {
 
 function handlePrev() {
   if (selectedLyricIndex.value === 0) {
-    selectedLyricIndex.value = lyricsData.value.length - 1;
+    selectedLyricIndex.value = lyricData.value.length - 1;
     lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView();
     return;
   }
@@ -73,7 +115,7 @@ function handlePrev() {
 }
 
 function handleNext() {
-  if (selectedLyricIndex.value === lyricsData.value.length - 1) {
+  if (selectedLyricIndex.value === lyricData.value.length - 1) {
     selectedLyricIndex.value = 0;
     lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView();
     return;
@@ -88,20 +130,6 @@ function handleNext() {
 
   lyricRefs.value.at(selectedLyricIndex.value).scrollIntoView({
     behavior: "smooth",
-  });
-}
-
-function fetchData(page?: number) {
-  let _page = page || pagination.value.page;
-  fetchLyrics({
-    pagination: {
-      page: _page.toString(),
-      limit: pagination.value.limit.toString(),
-    },
-    onSuccess: (response) => {
-      lyricsData.value = lyricsData.value.concat(response?.lyrics);
-      hasMore.value = response?.hasMore;
-    },
   });
 }
 </script>
@@ -121,6 +149,7 @@ function fetchData(page?: number) {
   .lyrics-content {
     display: flex;
     overflow: hidden;
+    width: 100%;
   }
 }
 </style>

@@ -15,7 +15,7 @@ const tr = {
     },
     lyrics: {
       mood: "mod",
-      writtenBy: "ekleyen",
+      addedBy: "ekleyen",
     },
   },
   login: {

@@ -13,7 +13,7 @@
         </div>
         <div>
           <div class="lyric-footer-title">
-            {{ t("homepage.lyrics.writtenBy") }}
+            {{ t("homepage.lyrics.addedBy") }}
           </div>
           <div class="lyric-footer-description">
             {{ owner?.username || "author" }}
@@ -29,6 +29,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 export type LyricProp = {
+  _id?: string;
   singer: string;
   mood: string;
   language: "en" | "tr";
@@ -60,10 +61,17 @@ defineExpose({ lyricRef });
     > *:first-child {
       display: flex;
       flex-direction: column;
+      height: 140px;
+      justify-content: center;
+      flex-direction: column;
       align-items: flex-end;
       padding: 16px 16px 16px 16px;
       border: 1px solid #80808054;
       border-radius: 4px;
+
+      @include mobile {
+        height: auto;
+      }
     }
     .lyric {
       font-size: 16px;
@@ -73,6 +81,8 @@ defineExpose({ lyricRef });
     }
     .singer {
       font-size: 12px;
+      margin-top: 12px;
+
       &::before {
         content: "-";
       }

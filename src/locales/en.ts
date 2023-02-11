@@ -15,7 +15,7 @@ const en = {
     },
     lyrics: {
       mood: "mood",
-      writtenBy: "written by",
+      addedBy: "added by",
     },
   },
   login: {
