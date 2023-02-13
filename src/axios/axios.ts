@@ -3,10 +3,11 @@ import jwt_decode from "jwt-decode";
 import { token } from "@/api/api";
 import { i18n } from "@/i18n";
 import { CookieManager } from "@/utils/CookieManager";
+import { convertSecondsToMs } from "@/utils/time";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000,
+  timeout: convertSecondsToMs(10),
   headers: {
     authorization: "",
   },

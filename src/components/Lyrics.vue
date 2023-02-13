@@ -35,6 +35,7 @@ import type { LyricProp } from "@/components/Lyric.vue";
 import { useInfiniteQuery } from "@tanstack/vue-query";
 import { queryClient } from "@/main";
 import { useI18n } from "vue-i18n";
+import { convertSecondsToMs } from "@/utils/time";
 
 const { t } = useI18n();
 
@@ -57,8 +58,8 @@ const { isLoading, isError, data, error, fetchNextPage } = useInfiniteQuery<
   Awaited<ReturnType<typeof fetchLyrics>>,
   { message: string }
 >({
-  refetchInterval: 10000 * 60,
-  staleTime: 5000,
+  refetchInterval: convertSecondsToMs(60 * 10),
+  staleTime: convertSecondsToMs(10),
   queryKey: ["lyrics"],
   queryFn: () =>
     fetchLyrics({
