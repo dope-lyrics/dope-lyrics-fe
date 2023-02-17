@@ -3,6 +3,7 @@ import { router } from "@/router/router";
 import App from "./App.vue";
 import { i18n } from "@/i18n";
 import { VueQueryPlugin, QueryClient } from "@tanstack/vue-query";
+import { setupFirebase } from "@/firebase";
 
 const app = createApp(App);
 
@@ -12,5 +13,7 @@ app.use(router);
 app.use(i18n);
 app.use(VueQueryPlugin);
 app.mount("#app");
+
+setupFirebase();
 
 // Now the app has started!
