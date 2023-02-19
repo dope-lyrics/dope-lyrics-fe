@@ -18,7 +18,15 @@ const AddSchema = z.object({
     .min(1, { message: localizationMessages.common.validation.cantBeEmpty }),
 });
 
-type AddSchemaType = z.infer<typeof AddSchema>;
+type AddSchemaFormType = z.infer<typeof AddSchema>;
+
+type AddPayloadType = {
+  language?: string | undefined;
+  singer: string;
+  song: string;
+  lyric: string[];
+  mood: string;
+};
 
 export { AddSchema };
-export type { AddSchemaType };
+export type { AddSchemaFormType, AddPayloadType };

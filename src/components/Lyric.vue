@@ -2,7 +2,9 @@
   <div class="lyric-item" ref="lyricRef">
     <div class="lyric-content">
       <div>
-        <p class="lyric">{{ lyric }}</p>
+        <div v-if="lyric.length > 0" class="lyric">
+          <p v-for="_lyric in lyric">{{ _lyric }}</p>
+        </div>
         <p class="singer">{{ singer }}</p>
         <p class="song">{{ song }}</p>
       </div>
@@ -34,7 +36,7 @@ export type LyricProp = {
   mood: string;
   language: "en" | "tr";
   song: string;
-  lyric: string;
+  lyric: string[];
   owner: {
     username: string;
   };
@@ -61,10 +63,10 @@ defineExpose({ lyricRef });
     > *:first-child {
       display: flex;
       flex-direction: column;
-      height: 140px;
+      min-height: 140px;
       justify-content: center;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       padding: 16px 16px 16px 16px;
       border: 1px solid #80808054;
       border-radius: 4px;
@@ -74,10 +76,11 @@ defineExpose({ lyricRef });
       }
     }
     .lyric {
-      font-size: 16px;
-      font-weight: bold;
-      font-family: "Kalam", cursive;
-      white-space: pre-line;
+      p {
+        font-size: 16px;
+        font-weight: bold;
+        font-family: "Kalam", cursive;
+      }
     }
     .singer {
       font-size: 12px;
