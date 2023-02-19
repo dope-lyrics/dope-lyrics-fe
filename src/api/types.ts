@@ -1,5 +1,5 @@
 import type { LoginSchemaType } from "@/pages/Login/types";
-import type { AddSchemaType } from "@/pages/Add/types";
+import type { AddPayloadType } from "@/pages/Add/types";
 
 type Callback = (arg?: any) => void;
 
@@ -13,7 +13,7 @@ type Login = {
 } & ApiResponse;
 
 type Add = {
-  payload: AddSchemaType;
+  payload: AddPayloadType;
 } & ApiResponse;
 
 type Token = {

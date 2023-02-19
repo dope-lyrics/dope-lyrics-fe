@@ -103,7 +103,7 @@
 import { ref, reactive, Ref } from "vue";
 import { RouterLink } from "vue-router";
 import { add } from "@/api/api";
-import { AddSchema, AddSchemaType } from "@/pages/Add/types";
+import { AddSchema, AddSchemaFormType } from "@/pages/Add/types";
 import { VF } from "@/utils/validateForm.js";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
@@ -138,7 +138,7 @@ const inputRefs: { [key: string]: Ref<HTMLDivElement | undefined> } = {
 const errorMessage = ref<null | string[] | string[][]>(null);
 const showSuccessMessage = ref(false);
 
-const { validateForm, onFocus } = VF<AddSchemaType>({
+const { validateForm, onFocus } = VF<AddSchemaFormType>({
   formData: formData.value,
   schema: AddSchema,
   inputRefs,
@@ -147,6 +147,7 @@ const { validateForm, onFocus } = VF<AddSchemaType>({
 
 function handleChange(event: Event) {
   const element = event.target as HTMLInputElement;
+
   // @ts-ignore
   formData.value[element.name] = element.value;
 }
@@ -160,11 +161,16 @@ function handleSubmit() {
 
   if (!isFormValid) return;
 
+  const payload = {
+    ...formData.value,
+    lyric: formData.value.lyric.split("\n").map((line) => line.trim()),
+  };
+
   add({
-    payload: formData.value,
+    payload: payload,
     onSuccess: (response) => {
       showSuccessMessage.value = true;
-
+      
       // reset form
       formData.value = initialData;
 
