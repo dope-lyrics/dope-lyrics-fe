@@ -102,7 +102,7 @@
 <script setup lang="ts">
 import { ref, reactive, Ref } from "vue";
 import { RouterLink } from "vue-router";
-import { add } from "@/api/api";
+import { API } from "@/api/api";
 import { AddSchema, AddSchemaFormType } from "@/pages/Add/types";
 import { VF } from "@/utils/validateForm.js";
 import FormButton from "@/components/common/ui/FormButton.vue";
@@ -166,11 +166,11 @@ function handleSubmit() {
     lyric: formData.value.lyric.split("\n").map((line) => line.trim()),
   };
 
-  add({
+  API.add({
     payload: payload,
     onSuccess: (response) => {
       showSuccessMessage.value = true;
-      
+
       // reset form
       formData.value = initialData;
 

@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { RouterLink, useRouter } from "vue-router";
 import { store } from "@/store/store";
-import { logout } from "@/api/api";
+import { API } from "@/api/api";
 import { useI18n } from "vue-i18n";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
@@ -24,7 +24,7 @@ const { t } = useI18n();
 const router = useRouter();
 
 function handleLogout() {
-  logout({
+  API.logout({
     onSuccess: () => {
       router.push({ name: "Home" });
     },
