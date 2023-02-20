@@ -6,6 +6,11 @@ const tr = {
     validation: {
       cantBeEmpty: "Bu alan boş olamaz!",
     },
+    form: {
+      select: {
+        choose: "Seçiniz...",
+      },
+    },
   },
   homepage: {
     welcome: "{name} ' e hoş geldin {title} ",

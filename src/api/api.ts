@@ -96,4 +96,19 @@ async function fetchLyrics(queryKey: any) {
   }
 }
 
-export { login, logout, add, token, fetchLyrics };
+async function fetchMoods() {
+  try {
+    let response = await axiosPrivate.get<{
+      data: [{ [key: string]: string }];
+    }>("/lyrics/moods");
+    return response?.data?.data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+
+const API = { login, logout, add, token, fetchLyrics, fetchMoods };
+
+export { API };

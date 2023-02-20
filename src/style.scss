@@ -18,9 +18,11 @@ p {
 }
 
 .form-error {
-  input {
+  input,
+  select {
     border: 1px solid #ef4444;
   }
+
   .form-error-field {
     color: #ef4444;
     font-size: 14px;

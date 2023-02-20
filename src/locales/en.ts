@@ -6,6 +6,11 @@ const en = {
     validation: {
       cantBeEmpty: "Can not be empty",
     },
+    form: {
+      select: {
+        choose: "Please choose an option...",
+      },
+    },
   },
   homepage: {
     welcome: "Welcome to {name} {title}",
