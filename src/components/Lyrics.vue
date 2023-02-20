@@ -27,7 +27,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
-import { fetchLyrics } from "@/api/api";
+import { API } from "@/api/api";
 import LeftArrow from "@/components/common/ui/LeftArrow.vue";
 import RightArrow from "@/components/common/ui/RightArrow.vue";
 import Lyric from "@/components/Lyric.vue";
@@ -35,7 +35,7 @@ import type { LyricProp } from "@/components/Lyric.vue";
 import { useInfiniteQuery } from "@tanstack/vue-query";
 import { queryClient } from "@/main";
 import { useI18n } from "vue-i18n";
-import { convertSecondsToMs } from "@/utils/time";
+import { timeAsMs } from "@/utils/time";
 
 const { t } = useI18n();
 
@@ -55,14 +55,14 @@ const pagination = ref({
 const lastFetchedIndex = ref(0);
 
 const { isLoading, isError, data, error, fetchNextPage } = useInfiniteQuery<
-  Awaited<ReturnType<typeof fetchLyrics>>,
+  Awaited<ReturnType<typeof API.fetchLyrics>>,
   { message: string }
 >({
-  refetchInterval: convertSecondsToMs(60 * 10),
-  staleTime: convertSecondsToMs(10),
+  refetchInterval: timeAsMs(10, "minutes"),
+  staleTime: timeAsMs(10, "seconds"),
   queryKey: ["lyrics"],
   queryFn: () =>
-    fetchLyrics({
+    API.fetchLyrics({
       page: pagination.value.page,
       limit: pagination.value.limit,
     }),

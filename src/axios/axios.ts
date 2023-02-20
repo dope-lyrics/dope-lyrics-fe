@@ -1,13 +1,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import jwt_decode from "jwt-decode";
-import { token } from "@/api/api";
+import { API } from "@/api/api";
 import { i18n } from "@/i18n";
 import { CookieManager } from "@/utils/CookieManager";
-import { convertSecondsToMs } from "@/utils/time";
+import { timeAsMs } from "@/utils/time";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: convertSecondsToMs(10),
+  timeout: timeAsMs(10, "seconds"),
   headers: {
     authorization: "",
   },
@@ -43,7 +43,7 @@ axiosPrivate.interceptors.request.use(
     const isTokenExpired = decodedToken.exp * 1000 < currentDate.getTime();
 
     if (isTokenExpired) {
-      const newTokens = await token({
+      const newTokens = await API.token({
         refreshToken: CookieManager.get.refreshToken() || "",
       });
 

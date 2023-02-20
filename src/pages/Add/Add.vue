@@ -39,13 +39,17 @@
 
         <div class="add-lyrics-mood" :ref="inputRefs.mood">
           <label>{{ t("add.form.mood") }}</label>
-          <input
-            type="text"
+          <select
+            v-if="moods && moods?.length > 0"
             name="mood"
-            @input="handleChange"
+            @change="handleChange"
             @focus="handleFocus"
-            :value="formData.mood"
-          />
+          >
+            <option value="">{{ t("common.form.select.choose") }}</option>
+            <option v-for="mood in moods" :value="mood.key">
+              {{ mood.value }}
+            </option>
+          </select>
           <div v-show="errors.mood" class="form-error-field">
             {{ errors.mood }}
           </div>
@@ -68,17 +72,14 @@
 
         <div class="add-lyrics-song-language" :ref="inputRefs.language">
           <label>{{ t("add.form.language") }}</label>
-          <select
-            name="language"
-            @change="handleChange"
-            :value="formData.language"
-          >
+          <select name="language" @change="handleChange" @focus="handleFocus">
+            <option value="">{{ t("common.form.select.choose") }}</option>
             <option value="en">English</option>
             <option value="tr">Türkçe</option>
           </select>
-          <!-- <div v-show="errors.language" class="form-error-field">
+          <div v-show="errors.language" class="form-error-field">
             {{ errors.language }}
-          </div> -->
+          </div>
         </div>
 
         <div
@@ -102,18 +103,27 @@
 <script setup lang="ts">
 import { ref, reactive, Ref } from "vue";
 import { RouterLink } from "vue-router";
-import { add } from "@/api/api";
+import { API } from "@/api/api";
 import { AddSchema, AddSchemaFormType } from "@/pages/Add/types";
 import { VF } from "@/utils/validateForm.js";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
+import { useQuery } from "@tanstack/vue-query";
+import { timeAsMs } from "@/utils/time";
 
 const { t } = useI18n();
+
+const { data: moods } = useQuery({
+  queryKey: ["moods"],
+  queryFn: () => API.fetchMoods(),
+  staleTime: timeAsMs(10, "minutes"),
+});
+
 const initialData = {
   singer: "",
   song: "",
   lyric: "",
-  language: "tr",
+  language: "",
   mood: "",
 };
 
@@ -123,7 +133,7 @@ const errors = reactive({
   singer: "",
   song: "",
   lyric: "",
-  language: "tr",
+  language: "",
   mood: "",
 });
 
@@ -146,7 +156,7 @@ const { validateForm, onFocus } = VF<AddSchemaFormType>({
 });
 
 function handleChange(event: Event) {
-  const element = event.target as HTMLInputElement;
+  const element = event.target as HTMLInputElement | HTMLSelectElement;
 
   // @ts-ignore
   formData.value[element.name] = element.value;
@@ -166,11 +176,11 @@ function handleSubmit() {
     lyric: formData.value.lyric.split("\n").map((line) => line.trim()),
   };
 
-  add({
+  API.add({
     payload: payload,
     onSuccess: (response) => {
       showSuccessMessage.value = true;
-      
+
       // reset form
       formData.value = initialData;
 
@@ -229,6 +239,10 @@ function handleSubmit() {
       textarea {
         height: 8rem;
         width: 100%;
+      }
+      select {
+        width: 100%;
+        height: 40px;
       }
     }
 
