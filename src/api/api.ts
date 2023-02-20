@@ -1,5 +1,5 @@
 import axios, { axiosPrivate } from "@/axios/axios";
-import type { Login, Add, Token, FetchLyrics, ApiResponse } from "@/api/types";
+import type { Login, Add, Token, ApiResponse } from "@/api/types";
 import { store } from "@/store/store";
 import { CookieManager } from "@/utils/CookieManager";
 
@@ -98,7 +98,7 @@ async function fetchLyrics(queryKey: any) {
 
 async function fetchMoods() {
   try {
-    let response = await axiosPrivate.get<{
+    let response = await axios.get<{
       data: [{ [key: string]: string }];
     }>("/lyrics/moods");
     return response?.data?.data;
