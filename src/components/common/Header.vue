@@ -23,15 +23,13 @@ import ChangeLanguage from "@/components/ChangeLanguage.vue";
 const { t } = useI18n();
 const router = useRouter();
 
-function handleLogout() {
-  API.logout({
-    onSuccess: () => {
-      router.push({ name: "Home" });
-    },
-    onError: () => {
-      alert("Error occurred");
+async function handleLogout() {
+  await API.logout({
+    onError: (error) => {
+      alert((error as Error).message);
     },
   });
+  router.push({ name: "Home" });
 }
 </script>
 

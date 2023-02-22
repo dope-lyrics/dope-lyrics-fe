@@ -114,7 +114,7 @@ function handleSubmit() {
 
   API.login({
     payload: formData,
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate();
     },
     onError: (error) => {
