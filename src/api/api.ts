@@ -25,18 +25,15 @@ async function login({ payload, onError, onSuccess }: Login) {
   }
 }
 
-async function logout({ onError, onSuccess }: ApiResponse) {
+async function logout({ onError }: ApiResponse) {
   try {
-    axiosPrivate.post<any>("/logout").finally(() => {
-      CookieManager.remove.accessToken();
-      CookieManager.remove.refreshToken();
+    await axiosPrivate.post("/logout");
 
-      localStorage.removeItem("user");
+    CookieManager.remove.accessToken();
+    CookieManager.remove.refreshToken();
+    localStorage.removeItem("user");
 
-      store.user = null;
-    });
-
-    if (onSuccess) onSuccess();
+    store.user = null;
   } catch (error) {
     console.error(error);
     if (onError) onError(error);

@@ -7,7 +7,7 @@ import { timeAsMs } from "@/utils/time";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: timeAsMs(10, "seconds"),
+  timeout: timeAsMs(20, "seconds"),
   headers: {
     authorization: "",
   },
@@ -31,6 +31,7 @@ a.interceptors.request.use(
 axiosPrivate.interceptors.request.use(
   async function (config: any) {
     // Do something before request is sent
+
     if (!CookieManager.get.accessToken()) {
       return config;
     }
