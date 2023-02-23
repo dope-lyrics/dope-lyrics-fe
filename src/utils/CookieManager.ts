@@ -1,54 +1,66 @@
 import Cookies from "js-cookie";
 import { Languages } from "@/types/common";
 
-type CookieTypes = "accessToken" | "refreshToken" | "lang";
-type Tokens = Exclude<CookieTypes, "lang">;
+const COOKIES = {
+  access_token: "access_token",
+  refresh_token: "refresh_token",
+  user: "user",
+  lang: "lang",
+} as const;
+const { access_token, refresh_token, user, lang } = COOKIES;
 
-type CookieManagerProps = {
-  get: {
-    [key in Tokens]: () => string | undefined;
-  } & {
-    lang: () => Languages;
-  };
-  set: {
-    [key in Tokens]: (value: string) => void;
-  } & {
-    lang: (value: Languages) => void;
-  };
-  remove: {
-    [key in Tokens]: () => void;
-  };
-};
-
-const CookieManager: CookieManagerProps = {
+const CookieManager = {
   get: {
     accessToken: () => {
-      return Cookies.get("access_token");
+      return Cookies.get(access_token);
     },
     refreshToken: () => {
-      return Cookies.get("refresh_token");
+      return Cookies.get(refresh_token);
+    },
+    user: (): null | { username: string } => {
+      if (typeof Cookies.get(user) === "string") {
+        return JSON.parse(Cookies.get(user) as string);
+      }
+      return null;
     },
     lang: () => {
-      return Cookies.get("lang") as Languages;
+      return Cookies.get(lang) as Languages;
     },
   },
   set: {
-    accessToken: (value: string) => {
-      Cookies.set("access_token", value);
+    accessToken: (
+      value: string,
+      options?: Cookies.CookieAttributes | undefined
+    ) => {
+      Cookies.set(access_token, value, options);
     },
-    refreshToken: (value: string) => {
-      Cookies.set("refresh_token", value);
+    refreshToken: (
+      value: string,
+      options?: Cookies.CookieAttributes | undefined
+    ) => {
+      Cookies.set(refresh_token, value, options);
+    },
+    user: (value: any, options: Cookies.CookieAttributes | undefined) => {
+      Cookies.set(user, JSON.stringify(value), options);
     },
     lang: (value: Languages) => {
-      Cookies.set("lang", value);
+      Cookies.set(lang, value);
     },
   },
   remove: {
-    accessToken: () => {
-      Cookies.remove("access_token");
+    accessToken: function () {
+      Cookies.remove(access_token);
     },
-    refreshToken: () => {
-      Cookies.remove("refres_token");
+    refreshToken: function () {
+      Cookies.remove(refresh_token);
+    },
+    user: function () {
+      Cookies.remove(user);
+    },
+    clearAll: function () {
+      this.accessToken();
+      this.refreshToken();
+      this.user();
     },
   },
 };

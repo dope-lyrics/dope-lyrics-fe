@@ -12,5 +12,3 @@ app.use(router);
 app.use(i18n);
 app.use(VueQueryPlugin);
 app.mount("#app");
-
-// Now the app has started!

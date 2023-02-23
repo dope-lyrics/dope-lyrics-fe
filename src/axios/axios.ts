@@ -30,10 +30,15 @@ a.interceptors.request.use(
 
 axiosPrivate.interceptors.request.use(
   async function (config: any) {
-    // Do something before request is sent
-
     if (!CookieManager.get.accessToken()) {
-      return config;
+      return;
+    }
+
+    if (!CookieManager.get.refreshToken()) {
+      CookieManager.remove.clearAll();
+
+      window.location.href = "/";
+      return;
     }
 
     const currentDate = new Date();
@@ -44,14 +49,9 @@ axiosPrivate.interceptors.request.use(
     const isTokenExpired = decodedToken.exp * 1000 < currentDate.getTime();
 
     if (isTokenExpired) {
-      const newTokens = await API.token({
-        refreshToken: CookieManager.get.refreshToken() || "",
+      await API.token({
+        refreshToken: CookieManager.get.refreshToken() as string,
       });
-
-      if (newTokens) {
-        CookieManager.set.accessToken(newTokens.accessToken);
-        CookieManager.set.refreshToken(newTokens.refreshToken);
-      }
     }
     config.headers[
       "authorization"
