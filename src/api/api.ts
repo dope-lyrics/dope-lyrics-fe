@@ -2,6 +2,7 @@ import axios, { axiosPrivate } from "@/axios/axios";
 import type { Login, Add, Token, ApiResponse } from "@/api/types";
 import { store } from "@/store/store";
 import { CookieManager } from "@/utils/CookieManager";
+import jwt_decode from "jwt-decode";
 
 async function login({ payload, onError, onSuccess }: Login) {
   try {
@@ -12,11 +13,23 @@ async function login({ payload, onError, onSuccess }: Login) {
     }>("/login", payload);
 
     CookieManager.set.accessToken(response.data.accessToken);
-    CookieManager.set.refreshToken(response.data.refreshToken);
+
+    const decodedRefreshToken: { exp: number } = jwt_decode(
+      response.data.refreshToken
+    );
+    const refreshTokenExpDate = new Date(decodedRefreshToken.exp * 1000);
+
+    CookieManager.set.refreshToken(response.data.refreshToken, {
+      expires: refreshTokenExpDate,
+    });
 
     store.user = response?.data?.user;
 
-    if (store.user) localStorage.setItem("user", JSON.stringify(store.user));
+    if (store.user) {
+      CookieManager.set.user(store.user, {
+        expires: refreshTokenExpDate,
+      });
+    }
 
     if (onSuccess) onSuccess(response?.data);
   } catch (error: any) {
@@ -29,9 +42,7 @@ async function logout({ onError }: ApiResponse) {
   try {
     await axiosPrivate.post("/logout");
 
-    CookieManager.remove.accessToken();
-    CookieManager.remove.refreshToken();
-    localStorage.removeItem("user");
+    CookieManager.remove.clearAll();
 
     store.user = null;
   } catch (error) {
@@ -42,20 +53,31 @@ async function logout({ onError }: ApiResponse) {
 
 async function token({
   refreshToken,
-  onError,
-  onSuccess,
 }: Token): Promise<{ accessToken: string; refreshToken: string } | undefined> {
   try {
-    const response = await axios.post<any>("/token", {
+    const newTokens = await axios.post<any>("/token", {
       token: refreshToken,
     });
 
-    if (onSuccess) onSuccess(response);
+    if (newTokens.data) {
+      CookieManager.set.accessToken(newTokens.data.data.accessToken);
 
-    return response.data;
-  } catch (error) {
+      const decodedRefreshToken: { exp: number } = jwt_decode(
+        newTokens.data.data.refreshToken
+      );
+      const refreshTokenExpDate = new Date(decodedRefreshToken.exp * 1000);
+      CookieManager.set.refreshToken(newTokens.data.data.refreshToken, {
+        expires: refreshTokenExpDate,
+      });
+    }
+
+    return newTokens.data;
+  } catch (error: any) {
     console.error(error);
-    if (onError) onError();
+    if (error?.response?.data?.redirect) {
+      CookieManager.remove.clearAll();
+      window.location.href = error?.response?.data?.redirect || "/";
+    }
   }
 }
 

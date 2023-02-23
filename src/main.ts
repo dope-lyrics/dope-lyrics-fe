@@ -16,4 +16,3 @@ app.mount("#app");
 
 setupFirebase();
 
-// Now the app has started!

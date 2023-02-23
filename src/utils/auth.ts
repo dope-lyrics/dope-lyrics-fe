@@ -1,16 +1,16 @@
 import { store } from "@/store/store";
+import { CookieManager } from "@/utils/CookieManager";
 
 function Auth() {
   let isAuthenticated = false;
+  
+  const userInCookie = CookieManager.get.user();
 
-  if (store.user) isAuthenticated = true;
-  else {
-    const userInLocalStorage = localStorage.getItem("user");
-    if (userInLocalStorage) {
-      isAuthenticated = true;
-      store.user = JSON.parse(userInLocalStorage);
-    }
+  if (userInCookie) {
+    isAuthenticated = true;
   }
+
+  store.user = userInCookie;
 
   return {
     isAuthenticated,
