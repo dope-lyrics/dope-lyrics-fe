@@ -101,7 +101,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, Ref } from "vue";
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import { API } from "@/api/api";
 import { AddSchema, AddSchemaFormType } from "@/pages/Add/types";
@@ -129,30 +129,12 @@ const initialData = {
 
 let formData = ref({ ...initialData });
 
-const errors = reactive({
-  singer: "",
-  song: "",
-  lyric: "",
-  language: "",
-  mood: "",
-});
-
-const inputRefs: { [key: string]: Ref<HTMLDivElement | undefined> } = {
-  singer: ref<HTMLDivElement>(),
-  song: ref<HTMLDivElement>(),
-  lyric: ref<HTMLDivElement>(),
-  language: ref<HTMLDivElement>(),
-  mood: ref<HTMLDivElement>(),
-};
-
 const errorMessage = ref<null | string[] | string[][]>(null);
 const showSuccessMessage = ref(false);
 
-const { validateForm, onFocus } = VF<AddSchemaFormType>({
+const { validateForm, onFocus, errors, inputRefs } = VF<AddSchemaFormType>({
   formData: formData.value,
   schema: AddSchema,
-  inputRefs,
-  reactiveErrors: errors,
 });
 
 function handleChange(event: Event) {
