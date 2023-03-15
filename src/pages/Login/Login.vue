@@ -50,7 +50,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, Ref } from "vue";
+import { ref, reactive } from "vue";
 import { API } from "@/api/api";
 import { VF } from "@/utils/validateForm.js";
 import { LoginSchema } from "@/pages/Login/types";
@@ -73,23 +73,11 @@ const formData = reactive({
   password: "",
   rememberMe: false,
 });
-const errors = reactive({
-  username: "",
-  password: "",
-});
-
-const inputRefs: { [key: string]: Ref<HTMLDivElement | undefined> } = {
-  username: ref<HTMLDivElement>(),
-  password: ref<HTMLDivElement>(),
-};
-
 const errorMessage = ref<null | string[] | string[][]>(null);
 
-const { validateForm, onFocus } = VF<LoginSchemaType>({
+const { validateForm, onFocus, errors, inputRefs } = VF<LoginSchemaType>({
   formData,
   schema: LoginSchema,
-  inputRefs,
-  reactiveErrors: errors,
 });
 
 function navigate() {
