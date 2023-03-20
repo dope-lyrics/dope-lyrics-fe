@@ -89,14 +89,17 @@
           {{ t("add.message.success") }}
         </div>
 
-        <div v-show="errorMessage" class="login-form-error-message">
+        <div v-show="errorMessage" class="form-error-message">
           {{ errorMessage }}
         </div>
         <FormButton>{{ t("add.form.button.save") }}</FormButton>
       </form>
     </div>
     <div class="right-side">
-      <img src="@/assets/images/add-lyrics-image.jpg" />
+      <FormImage
+        alt="add image"
+        src="/src/assets/images/add-lyrics-image.jpg"
+      />
     </div>
   </div>
 </template>
@@ -110,6 +113,7 @@ import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
 import { useQuery } from "@tanstack/vue-query";
 import { timeAsMs } from "@/utils/time";
+import FormImage from "@/components/common/ui/FormImage.vue";
 
 const { t } = useI18n();
 
@@ -240,13 +244,6 @@ function handleSubmit() {
     @include mobileOrTablet {
       width: 100%;
       height: 30%;
-    }
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
     }
   }
 }

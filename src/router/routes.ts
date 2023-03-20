@@ -4,6 +4,8 @@ import Login from "@/pages/Login/Login.vue";
 import Add from "@/pages/Add/Add.vue";
 import AlreadyLoggedIn from "@/pages/AlreadyLoggedIn.vue";
 import NotFound from "@/pages/NotFound.vue";
+import Verify from "@/pages/Verify/Verify.vue";
+import Register from "@/pages/Register/Register.vue";
 
 const routes = [
   {
@@ -20,6 +22,12 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/register",
+    name: "Register",
+    component: Register,
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/login",
     name: "Login",
     component: Login,
@@ -32,10 +40,16 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/verify/:code",
+    name: "Verify",
+    component: Verify,
+  },
+  {
     path: "/alreadyLoggedIn",
     name: "AlreadyLoggedIn",
     component: AlreadyLoggedIn,
   },
+
   {
     path: "/:pathMatch(.*)*",
     component: NotFound,

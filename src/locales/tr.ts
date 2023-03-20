@@ -37,6 +37,20 @@ const tr = {
         password: "Şifre en az 3 karakter içermelidir",
       },
     },
+    dontHaveAccount: "Hesabın yok mu?",
+    register: "Üye ol",
+  },
+  register: {
+    enterDetails: "Aşağıdaki alanları doldurup üye olabilirsin",
+    form: {
+      reEnterPassword: "Şifreyi yeniden girin",
+      submit: "Üye ol",
+      validation: {
+        dontMatch: "Şifreler eşleşmiyor",
+      },
+    },
+    login: "Giriş yap",
+    haveAccount: "Daha önce üye olmuş muydunuz?",
   },
   add: {
     addLyrics: "Şarkı sözü ekle",

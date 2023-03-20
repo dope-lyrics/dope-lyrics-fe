@@ -27,7 +27,7 @@ const en = {
   },
   login: {
     welcomeBack: "Welcome back",
-    enterDetails: "Enter your details below",
+    enterDetails: "Fill out the inputs below",
     form: {
       username: "Username",
       password: "Password",
@@ -37,6 +37,20 @@ const en = {
         password: "Password must contain at least 3 characters",
       },
     },
+    dontHaveAccount: "Don't you have an account ?",
+    register: "Register",
+  },
+  register: {
+    enterDetails: "Fill out the inputs below",
+    form: {
+      reEnterPassword: "Re-enter your password",
+      submit: "Register",
+      validation: {
+        dontMatch: "Passwords don't match",
+      },
+    },
+    login: "Login",
+    haveAccount: "Already have an account?",
   },
   add: {
     addLyrics: "Add Lyrics",

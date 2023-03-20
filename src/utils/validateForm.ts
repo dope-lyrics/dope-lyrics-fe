@@ -5,7 +5,6 @@ type ValidateForm = {
   isFormValid: boolean;
   validationError?: null | {
     fieldErrors: { [key: string]: string[] };
-    paths: string[];
   };
 };
 
@@ -13,14 +12,18 @@ type ZodSchema = z.ZodObject<{}>;
 
 type VFType<T> = {
   formData: T;
-  schema: ZodSchema;
+  schema: any;
   inputRefs?: T;
+};
+
+type ErrorsType<T> = {
+  [Property in keyof T]: string[];
 };
 
 type VFReturnType<T> = {
   validateForm: () => ValidateForm;
   onFocus: (event: Event) => void;
-  errors: T;
+  errors: ErrorsType<T>;
   inputRefs: T;
 };
 
@@ -51,7 +54,7 @@ function VF<T extends object>({
 
   return {
     validateForm: () => {
-      const parsed = schema.safeParse(formData);
+      const parsed = (schema as ZodSchema).safeParse(formData);
 
       if (parsed.success) {
         return {
@@ -60,36 +63,19 @@ function VF<T extends object>({
         };
       }
 
-      const requiredFields = Object.keys(schema.shape).filter((field) => {
-        return !(
-          schema.shape[field as keyof typeof schema.shape] as z.ZodType
-        ).isOptional();
-      });
-
       const flattenedErrors = parsed.error.flatten();
-      const paths = Object.keys(flattenedErrors.fieldErrors);
+      const fieldErrors: { [key: string]: string[] } =
+        flattenedErrors.fieldErrors;
 
-      type FieldErrorType = keyof typeof flattenedErrors.fieldErrors;
-
-      requiredFields.forEach((field: string) => {
-        if (Object.hasOwn(flattenedErrors.fieldErrors, field)) {
-          errors[field] = Array.isArray(
-            flattenedErrors.fieldErrors[field as FieldErrorType]
-          )
-            ? flattenedErrors.fieldErrors[field as FieldErrorType][0]
-            : flattenedErrors.fieldErrors[field as FieldErrorType];
-        }
-      });
-
-      paths.forEach((path) => {
-        inputRefs[path].value?.classList.add("form-error");
-      });
+      for (const [key, value] of Object.entries(fieldErrors)) {
+        errors[key] = value;
+        inputRefs[key].value?.classList.add("form-error");
+      }
 
       return {
         isFormValid: false,
         validationError: {
           fieldErrors: flattenedErrors.fieldErrors,
-          paths,
         },
       };
     },

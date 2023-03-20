@@ -1,15 +1,14 @@
 <template>
-  <div class="login-page">
+  <div class="register-page">
     <TwoColumnLayout>
       <template #left>
-        <form class="login-form" @submit.prevent="handleSubmit">
-          <TopLink to="/"> {{ t("common.backToHome") }}</TopLink>
+        <form class="register-form" @submit.prevent="handleSubmit">
+          <TopLink to="/">{{ t("common.backToHome") }}</TopLink>
 
           <WelcomeMessage
             :title="t('login.welcomeBack')"
-            :description="t('login.enterDetails')"
+            :description="t('register.enterDetails')"
           />
-
           <FormInput
             :label="t('login.form.username')"
             type="text"
@@ -19,7 +18,6 @@
             :inputRef="inputRefs.username"
             :errors="errors.username"
           />
-
           <FormInput
             :label="t('login.form.password')"
             type="password"
@@ -29,22 +27,38 @@
             :inputRef="inputRefs.password"
             :errors="errors.password"
           />
+          <FormInput
+            :label="t('register.form.reEnterPassword')"
+            type="password"
+            name="rePassword"
+            @focus="handleFocus"
+            @change="handleChange"
+            :inputRef="inputRefs.rePassword"
+            :errors="errors.rePassword"
+          />
 
           <FormErrorMessage :message="errorMessage" />
 
-          <FormButton>{{ t("login.form.login") }}</FormButton>
+          <FormButton> {{ t("register.form.submit") }}</FormButton>
         </form>
 
-        <BottomLink :label="t('login.dontHaveAccount')" to="/register">
-          {{ t("login.register") }}
+        <BottomLink :label="t('register.haveAccount')" to="/login">
+          {{ t("register.login") }}
         </BottomLink>
       </template>
       <template #right>
         <div class="right">
-          <FormImage
-            src="/src/assets/images/login-horizontal.jpeg"
-            alt="login image"
-          />
+          <figure>
+            <FormImage
+              alt="verify image"
+              src="/src/assets/images/verify-page-pic.jpg"
+            />
+            <figcaption>
+              <a href="https://unsplash.com/photos/z1d-LP8sjuI"
+                >Unsplash @helloimnik</a
+              >
+            </figcaption>
+          </figure>
         </div>
       </template>
     </TwoColumnLayout>
@@ -54,69 +68,38 @@
 import { ref, reactive } from "vue";
 import { API } from "@/api/api";
 import { VF } from "@/utils/validateForm.js";
-import { LoginSchema } from "@/pages/Login/types";
-import type { LoginSchemaType } from "@/pages/Login/types";
-import { useRouter, RouterLink, onBeforeRouteLeave } from "vue-router";
-import { store } from "@/store/store";
-import { privateRoutes } from "@/router/routes";
+import { RouterLink } from "vue-router";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
-import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
+import { RegisterSchemaType } from "@/pages/Register/types";
+import { RegisterSchema } from "@/pages/Register/types";
 import FormInput from "@/components/common/ui/FormInput.vue";
 import WelcomeMessage from "@/components/common/ui/WelcomeMessage.vue";
+import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
+import TopLink from "@/components/common/ui/TopLink.vue";
 import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
 import BottomLink from "@/components/common/ui/BottomLink.vue";
-import TopLink from "@/components/common/ui/TopLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
 
-onBeforeRouteLeave((to, from) => {
-  store.requestedFrom = "";
-});
-
-const router = useRouter();
 const { t } = useI18n();
 
 const formData = reactive({
   username: "",
   password: "",
+  rePassword: "",
   rememberMe: false,
 });
-const errorMessage = ref<string | null>(null);
+const errorMessage = ref<null | string>(null);
 
-const { validateForm, onFocus, errors, inputRefs } = VF<LoginSchemaType>({
+const { validateForm, onFocus, errors, inputRefs } = VF<RegisterSchemaType>({
   formData,
-  schema: LoginSchema,
+  schema: RegisterSchema,
 });
-
-function navigate() {
-  if (!store.requestedFrom) {
-    router.push({ name: "Home" });
-    return;
-  }
-
-  const requester = privateRoutes.find(
-    (routeName) => routeName === store.requestedFrom
-  );
-
-  if (requester) {
-    router.push({ name: requester });
-  }
-}
 
 function handleSubmit() {
   const { isFormValid } = validateForm();
 
   if (!isFormValid) return;
-
-  API.login({
-    payload: formData,
-    onSuccess: () => {
-      navigate();
-    },
-    onError: (error) => {
-      errorMessage.value = error;
-    },
-  });
 }
 
 function handleChange(event: Event) {
@@ -133,8 +116,8 @@ function handleFocus(event: Event) {
 </script>
 
 <style lang="scss" scoped>
-.login-page {
-  .login-form {
+.register-page {
+  .register-form {
     padding: 3rem 3rem 0;
     max-width: 800px;
 
@@ -145,6 +128,13 @@ function handleFocus(event: Event) {
   }
   .right {
     height: 100%;
+    figure {
+      height: calc(100% - 26px);
+      margin: 0;
+      figcaption {
+        text-align: center;
+      }
+    }
   }
 }
 </style>
