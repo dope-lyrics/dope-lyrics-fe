@@ -6,6 +6,7 @@
       :name="name"
       @input="handleChange"
       @focus="handleFocus"
+      :maxlength="maxlength"
     />
     <div v-show="errors" class="form-error-field">
       <div v-for="_err in errors">{{ _err }}</div>
@@ -15,6 +16,7 @@
 
 <script setup lang="ts">
 defineProps<FormInputProps>();
+const emit = defineEmits(["change", "focus"]);
 
 type FormInputProps = {
   label: string;
@@ -22,9 +24,8 @@ type FormInputProps = {
   name: string;
   inputRef: any;
   errors: string[];
+  maxlength?: string;
 };
-
-const emit = defineEmits(["change", "focus"]);
 
 const handleChange = (event: Event) => {
   emit("change", event);
