@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { RouterLink, useRouter } from "vue-router";
 import { store } from "@/store/store";
-import { API } from "@/api/api";
+import { UserAPI } from "@/api/user/user";
 import { useI18n } from "vue-i18n";
 import ChangeLanguage from "@/components/ChangeLanguage.vue";
 
@@ -24,7 +24,7 @@ const { t } = useI18n();
 const router = useRouter();
 
 async function handleLogout() {
-  await API.logout({
+  await UserAPI.logout({
     onError: (error) => {
       alert((error as Error).message);
     },

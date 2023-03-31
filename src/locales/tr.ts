@@ -5,6 +5,7 @@ const tr = {
     backToHome: "Anasayfaya dön",
     validation: {
       cantBeEmpty: "Bu alan boş olamaz!",
+      notValid: "Geçerli bir email adresi giriniz."
     },
     form: {
       select: {
@@ -31,6 +32,7 @@ const tr = {
     form: {
       username: "Kullanıcı adı",
       password: "Şifre",
+      email: "E-posta",
       login: "Giriş yap",
       validation: {
         username: "Kullanıcı adı en az 6 karakter içermelidir",

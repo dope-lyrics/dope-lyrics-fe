@@ -20,6 +20,10 @@ router.beforeEach((to, from) => {
     return { name: "AlreadyLoggedIn" };
   }
 
+  if (to.name === "Register" && isAuthenticated) {
+    return { name: "Home" };
+  }
+
   /**
    *  if user is not logged in and wants to navigate to any private route, redirect to login first
    *  if login process is successful, navigate to requested url. (handled in Login.vue)

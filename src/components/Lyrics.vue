@@ -27,7 +27,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
-import { API } from "@/api/api";
+import { LyricAPI } from "@/api/lyric/lyric";
 import LeftArrow from "@/components/common/ui/LeftArrow.vue";
 import RightArrow from "@/components/common/ui/RightArrow.vue";
 import Lyric from "@/components/Lyric.vue";
@@ -55,14 +55,14 @@ const pagination = ref({
 const lastFetchedIndex = ref(0);
 
 const { isLoading, isError, data, error, fetchNextPage } = useInfiniteQuery<
-  Awaited<ReturnType<typeof API.fetchLyrics>>,
+  Awaited<ReturnType<typeof LyricAPI.fetchLyrics>>,
   { message: string }
 >({
   refetchInterval: timeAsMs(10, "minutes"),
   staleTime: timeAsMs(10, "seconds"),
   queryKey: ["lyrics"],
   queryFn: () =>
-    API.fetchLyrics({
+    LyricAPI.fetchLyrics({
       page: pagination.value.page,
       limit: pagination.value.limit,
     }),

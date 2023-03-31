@@ -19,6 +19,15 @@
             :errors="errors.username"
           />
           <FormInput
+            :label="t('login.form.email')"
+            type="text"
+            name="email"
+            @focus="handleFocus"
+            @change="handleChange"
+            :inputRef="inputRefs.email"
+            :errors="errors.email"
+          />
+          <FormInput
             :label="t('login.form.password')"
             type="password"
             name="password"
@@ -30,11 +39,11 @@
           <FormInput
             :label="t('register.form.reEnterPassword')"
             type="password"
-            name="rePassword"
+            name="passwordConfirm"
             @focus="handleFocus"
             @change="handleChange"
-            :inputRef="inputRefs.rePassword"
-            :errors="errors.rePassword"
+            :inputRef="inputRefs.passwordConfirm"
+            :errors="errors.passwordConfirm"
           />
 
           <FormErrorMessage :message="errorMessage" />
@@ -66,13 +75,10 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { API } from "@/api/api";
 import { VF } from "@/utils/validateForm.js";
-import { RouterLink } from "vue-router";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
-import { RegisterSchemaType } from "@/pages/Register/types";
-import { RegisterSchema } from "@/pages/Register/types";
+import { RegisterSchema, RegisterSchemaType } from "@/pages/Register/types";
 import FormInput from "@/components/common/ui/FormInput.vue";
 import WelcomeMessage from "@/components/common/ui/WelcomeMessage.vue";
 import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
@@ -80,13 +86,15 @@ import TopLink from "@/components/common/ui/TopLink.vue";
 import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
 import BottomLink from "@/components/common/ui/BottomLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
+import { UserAPI } from "@/api/user/user";
 
 const { t } = useI18n();
 
 const formData = reactive({
   username: "",
+  email: "",
   password: "",
-  rePassword: "",
+  passwordConfirm: "",
   rememberMe: false,
 });
 const errorMessage = ref<null | string>(null);
@@ -100,6 +108,17 @@ function handleSubmit() {
   const { isFormValid } = validateForm();
 
   if (!isFormValid) return;
+
+  UserAPI.register({
+    payload: formData,
+    onSuccess: (message) => {
+      alert(message);
+    },
+    onError: (error) => {
+      console.log(error);
+      alert(error);
+    },
+  });
 }
 
 function handleChange(event: Event) {

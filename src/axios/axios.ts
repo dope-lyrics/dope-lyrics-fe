@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import jwt_decode from "jwt-decode";
-import { API } from "@/api/api";
 import { i18n } from "@/i18n";
 import { CookieManager } from "@/utils/CookieManager";
 import { timeAsMs } from "@/utils/time";
+import { UserAPI } from "@/api/user/user";
 
 const commonConfig = {
   baseURL: import.meta.env.VITE_API_URL,
@@ -49,9 +49,7 @@ axiosPrivate.interceptors.request.use(
     const isTokenExpired = decodedToken.exp * 1000 < currentDate.getTime();
 
     if (isTokenExpired) {
-      await API.token({
-        refreshToken: CookieManager.get.refreshToken() as string,
-      });
+      await UserAPI.token(CookieManager.get.refreshToken() as string);
     }
     config.headers[
       "authorization"

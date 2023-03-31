@@ -5,6 +5,7 @@ const en = {
     backToHome: "Back to homepage",
     validation: {
       cantBeEmpty: "Can not be empty",
+      notValid: "Enter a valid email.",
     },
     form: {
       select: {
@@ -31,6 +32,7 @@ const en = {
     form: {
       username: "Username",
       password: "Password",
+      email: "E-mail",
       login: "Login",
       validation: {
         username: "Username must contain at least 6 characters",

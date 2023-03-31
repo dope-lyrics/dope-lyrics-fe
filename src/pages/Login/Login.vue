@@ -52,7 +52,7 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { API } from "@/api/api";
+import { UserAPI } from "@/api/user/user";
 import { VF } from "@/utils/validateForm.js";
 import { LoginSchema } from "@/pages/Login/types";
 import type { LoginSchemaType } from "@/pages/Login/types";
@@ -108,12 +108,12 @@ function handleSubmit() {
 
   if (!isFormValid) return;
 
-  API.login({
+  UserAPI.login({
     payload: formData,
     onSuccess: () => {
       navigate();
     },
-    onError: (error) => {
+    onError: (error: string) => {
       errorMessage.value = error;
     },
   });

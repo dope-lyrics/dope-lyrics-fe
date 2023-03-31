@@ -95,7 +95,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { API } from "@/api/api";
+import { LyricAPI } from "@/api/lyric/lyric";
 import { AddSchema, AddSchemaFormType } from "@/pages/Add/types";
 import { VF } from "@/utils/validateForm.js";
 import FormButton from "@/components/common/ui/FormButton.vue";
@@ -114,7 +114,7 @@ const { t } = useI18n();
 
 const { data: moods } = useQuery({
   queryKey: ["moods"],
-  queryFn: () => API.fetchMoods(),
+  queryFn: () => LyricAPI.fetchMoods(),
   staleTime: timeAsMs(10, "minutes"),
 });
 
@@ -156,7 +156,7 @@ function handleSubmit() {
     lyric: formData.value.lyric.split("\n").map((line) => line.trim()),
   };
 
-  API.add({
+  LyricAPI.add({
     payload: payload,
     onSuccess: (response) => {
       showSuccessMessage.value = true;
