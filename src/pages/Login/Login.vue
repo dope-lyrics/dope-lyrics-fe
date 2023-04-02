@@ -53,7 +53,7 @@ import { UserAPI } from "@/api/user/user";
 import { VF } from "@/utils/validateForm.js";
 import { LoginSchema } from "@/pages/Login/types";
 import type { LoginSchemaType } from "@/pages/Login/types";
-import { useRouter, RouterLink, onBeforeRouteLeave } from "vue-router";
+import { useRouter, onBeforeRouteLeave } from "vue-router";
 import { store } from "@/store/store";
 import { privateRoutes } from "@/router/routes";
 import FormButton from "@/components/common/ui/FormButton.vue";
