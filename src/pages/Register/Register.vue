@@ -56,10 +56,7 @@
       <template #right>
         <div class="right">
           <figure>
-            <FormImage
-              alt="verify image"
-              src="/src/assets/images/verify-page-pic.jpg"
-            />
+            <FormImage alt="verify image" :src="registerImage" />
             <figcaption>
               <a href="https://unsplash.com/photos/z1d-LP8sjuI"
                 >Unsplash @helloimnik</a
@@ -99,6 +96,7 @@ import BottomLink from "@/components/common/ui/BottomLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
 import { UserAPI } from "@/api/user/user";
 import Modal from "@/components/modals/Modal.vue";
+import registerImage from "@/assets/images/verify-page-pic.jpg";
 
 const { t } = useI18n();
 
