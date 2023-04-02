@@ -5,12 +5,14 @@ const tr = {
     backToHome: "Anasayfaya dön",
     validation: {
       cantBeEmpty: "Bu alan boş olamaz!",
+      notValid: "Geçerli bir email adresi giriniz.",
     },
     form: {
       select: {
         choose: "Seçiniz...",
       },
     },
+    close: "Kapat",
   },
   homepage: {
     welcome: "{name} ' e hoş geldin {title} ",
@@ -31,10 +33,33 @@ const tr = {
     form: {
       username: "Kullanıcı adı",
       password: "Şifre",
+      email: "E-posta",
       login: "Giriş yap",
       validation: {
         username: "Kullanıcı adı en az 6 karakter içermelidir",
         password: "Şifre en az 3 karakter içermelidir",
+      },
+    },
+    dontHaveAccount: "Hesabın yok mu?",
+    register: "Üye ol",
+  },
+  register: {
+    enterDetails: "Aşağıdaki alanları doldurup üye olabilirsin",
+    form: {
+      reEnterPassword: "Şifreyi yeniden girin",
+      submit: "Üye ol",
+      validation: {
+        dontMatch: "Şifreler eşleşmiyor",
+      },
+    },
+    login: "Giriş yap",
+    haveAccount: "Daha önce üye olmuş muydunuz?",
+    modal: {
+      error: {
+        title: "Hata oluştu",
+      },
+      success: {
+        title: "Başarılı",
       },
     },
   },

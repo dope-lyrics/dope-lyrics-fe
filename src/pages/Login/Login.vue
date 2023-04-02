@@ -1,57 +1,58 @@
 <template>
   <div class="login-page">
-    <div class="left-side">
-      <form class="login-form" @submit.prevent="handleSubmit">
-        <RouterLink class="link" to="/">{{
-          t("common.backToHome")
-        }}</RouterLink>
+    <TwoColumnLayout>
+      <template #left>
+        <form class="login-form" @submit.prevent="handleSubmit">
+          <TopLink to="/"> {{ t("common.backToHome") }}</TopLink>
 
-        <div class="login-form-content">
-          <h2>{{ t("login.welcomeBack") }}</h2>
-          <h3>{{ t("login.enterDetails") }}</h3>
-        </div>
-        <div class="login-form-username" :ref="inputRefs.username">
-          <label>{{ t("login.form.username") }}</label>
-          <input
+          <WelcomeMessage
+            :title="t('login.welcomeBack')"
+            :description="t('login.enterDetails')"
+          />
+
+          <FormInput
+            :label="t('login.form.username')"
             type="text"
             name="username"
-            @input="handleChange"
             @focus="handleFocus"
+            @change="handleChange"
+            :inputRef="inputRefs.username"
+            :errors="errors.username"
           />
-          <div v-show="errors.username" class="form-error-field">
-            {{ errors.username }}
-          </div>
-        </div>
-        <div class="login-form-password" :ref="inputRefs.password">
-          <div class="login-form-password-subtitles">
-            <label>{{ t("login.form.password") }}</label>
-          </div>
-          <input
+
+          <FormInput
+            :label="t('login.form.password')"
             type="password"
             name="password"
-            @input="handleChange"
             @focus="handleFocus"
+            @change="handleChange"
+            :inputRef="inputRefs.password"
+            :errors="errors.password"
           />
-          <div v-show="errors.password" class="form-error-field">
-            {{ errors.password }}
-          </div>
-        </div>
 
-        <div v-show="errorMessage" class="login-form-error-message">
-          {{ errorMessage }}
-        </div>
+          <FormErrorMessage :message="errorMessage" />
 
-        <FormButton>{{ t("login.form.login") }}</FormButton>
-      </form>
-    </div>
-    <div class="right-side">
-      <img src="@/assets/images/login-horizontal.jpeg" />
-    </div>
+          <FormButton>{{ t("login.form.login") }}</FormButton>
+        </form>
+
+        <BottomLink :label="t('login.dontHaveAccount')" to="/register">
+          {{ t("login.register") }}
+        </BottomLink>
+      </template>
+      <template #right>
+        <div class="right">
+          <FormImage
+            src="/src/assets/images/login-horizontal.jpeg"
+            alt="login image"
+          />
+        </div>
+      </template>
+    </TwoColumnLayout>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { API } from "@/api/api";
+import { UserAPI } from "@/api/user/user";
 import { VF } from "@/utils/validateForm.js";
 import { LoginSchema } from "@/pages/Login/types";
 import type { LoginSchemaType } from "@/pages/Login/types";
@@ -60,6 +61,13 @@ import { store } from "@/store/store";
 import { privateRoutes } from "@/router/routes";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
+import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
+import FormInput from "@/components/common/ui/FormInput.vue";
+import WelcomeMessage from "@/components/common/WelcomeMessage.vue";
+import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
+import BottomLink from "@/components/common/ui/BottomLink.vue";
+import TopLink from "@/components/common/TopLink.vue";
+import FormImage from "@/components/common/ui/FormImage.vue";
 
 onBeforeRouteLeave((to, from) => {
   store.requestedFrom = "";
@@ -73,7 +81,7 @@ const formData = reactive({
   password: "",
   rememberMe: false,
 });
-const errorMessage = ref<null | string[] | string[][]>(null);
+const errorMessage = ref<string | null>(null);
 
 const { validateForm, onFocus, errors, inputRefs } = VF<LoginSchemaType>({
   formData,
@@ -100,12 +108,12 @@ function handleSubmit() {
 
   if (!isFormValid) return;
 
-  API.login({
+  UserAPI.login({
     payload: formData,
     onSuccess: () => {
       navigate();
     },
-    onError: (error) => {
+    onError: (error: string) => {
       errorMessage.value = error;
     },
   });
@@ -126,118 +134,17 @@ function handleFocus(event: Event) {
 
 <style lang="scss" scoped>
 .login-page {
-  display: flex;
-  align-items: flex-start;
-  height: 100vh;
-
-  @include mobileOrTablet {
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-  }
-
-  .left-side {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+  .login-form {
+    padding: 3rem 3rem 0;
+    max-width: 800px;
 
     @include mobileOrTablet {
+      margin: 0;
       width: 100%;
     }
-
-    .login-form {
-      padding: 3rem;
-      width: 50%;
-      margin: auto;
-
-      @include mobileOrTablet {
-        margin: 0;
-        width: 100%;
-      }
-
-      .link {
-        color: #3b82f6;
-        font-weight: bold;
-      }
-
-      .login-form-content {
-        h2 {
-          font-size: 1.25rem;
-          font-weight: 700;
-          line-height: 1.75rem;
-        }
-        h3 {
-          font-size: 1.25rem;
-          font-weight: 400;
-          letter-spacing: 0.3px;
-          line-height: 2rem;
-        }
-      }
-      .login-form-username {
-        label {
-          display: block;
-          font-size: 1rem;
-          font-weight: 700;
-          line-height: 2.5rem;
-        }
-        input {
-          height: 2.5rem;
-          width: 100%;
-          margin: 0.5rem 0;
-        }
-      }
-      .login-form-password {
-        .login-form-password-subtitles {
-          display: flex;
-          justify-content: space-between;
-          label {
-            display: block;
-            font-size: 1rem;
-            font-weight: 700;
-            line-height: 2.5rem;
-          }
-          span {
-            a {
-              font-size: 0.875rem;
-              font-weight: 400;
-              line-height: 1rem;
-              color: #3b82f6;
-            }
-          }
-        }
-        input {
-          height: 2.5rem;
-          width: 100%;
-          margin: 0.5rem 0;
-        }
-      }
-      .login-form-checkbox {
-        display: flex;
-        margin: 1rem 0.2rem 1rem 0.2rem;
-        label {
-          color: #110f24;
-          font-size: 1rem;
-          line-height: 1.5rem;
-        }
-      }
-    }
   }
-
-  .right-side {
-    width: 50%;
+  .right {
     height: 100%;
-
-    @include mobileOrTablet {
-      width: 100%;
-      height: 30%;
-    }
-
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
   }
 }
 </style>

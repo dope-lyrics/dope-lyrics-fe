@@ -1,121 +1,120 @@
 <template>
   <div class="add-lyrics-page">
-    <div class="left-side">
-      <form class="add-lyrics-form" @submit.prevent="handleSubmit">
-        <RouterLink class="link" to="/">{{
-          t("common.backToHome")
-        }}</RouterLink>
-        <div class="add-lyrics-content">
-          <h2>{{ t("add.addLyrics") }}</h2>
-          <h3>{{ t("add.description") }}</h3>
-        </div>
+    <TwoColumnLayout>
+      <template #left>
+        <form class="add-lyrics-form" @submit.prevent="handleSubmit">
+          <TopLink to="/"> {{ t("common.backToHome") }} </TopLink>
 
-        <div class="add-lyrics-singer" :ref="inputRefs.singer">
-          <label>{{ t("add.form.singer") }}</label>
-          <input
+          <WelcomeMessage
+            :title="t('add.addLyrics')"
+            :description="t('add.description')"
+          />
+
+          <FormInput
+            :label="t('add.form.singer')"
             type="text"
             name="singer"
-            @input="handleChange"
             @focus="handleFocus"
-            :value="formData.singer"
+            @change="handleChange"
+            :inputRef="inputRefs.singer"
+            :errors="errors.singer"
           />
-          <div v-show="errors.singer" class="form-error-field">
-            {{ errors.singer }}
-          </div>
-        </div>
-        <div class="add-lyrics-song-name" :ref="inputRefs.song">
-          <label>{{ t("add.form.songName") }}</label>
-          <input
+
+          <FormInput
+            :label="t('add.form.songName')"
             type="text"
             name="song"
-            @input="handleChange"
             @focus="handleFocus"
-            :value="formData.song"
-          />
-          <div v-show="errors.song" class="form-error-field">
-            {{ errors.song }}
-          </div>
-        </div>
-
-        <div class="add-lyrics-mood" :ref="inputRefs.mood">
-          <label>{{ t("add.form.mood") }}</label>
-          <select
-            v-if="moods && moods?.length > 0"
-            name="mood"
             @change="handleChange"
-            @focus="handleFocus"
-          >
-            <option value="">{{ t("common.form.select.choose") }}</option>
-            <option v-for="mood in moods" :value="mood.key">
-              {{ mood.value }}
-            </option>
-          </select>
-          <div v-show="errors.mood" class="form-error-field">
-            {{ errors.mood }}
+            :inputRef="inputRefs.song"
+            :errors="errors.song"
+          />
+
+          <div class="add-lyrics-mood" :ref="inputRefs.mood">
+            <label>{{ t("add.form.mood") }}</label>
+            <select
+              v-if="moods && moods?.length > 0"
+              name="mood"
+              @change="handleChange"
+              @focus="handleFocus"
+            >
+              <option value="">{{ t("common.form.select.choose") }}</option>
+              <option v-for="mood in moods" :value="mood.key">
+                {{ mood.value }}
+              </option>
+            </select>
+            <div v-show="errors.mood" class="form-error-field">
+              {{ errors.mood }}
+            </div>
           </div>
-        </div>
 
-        <div class="add-lyrics-song-lyrics" :ref="inputRefs.lyric">
-          <label>{{ t("add.form.lyrics") }}</label>
-          <textarea
-            type="text"
-            name="lyric"
-            @input="handleChange"
-            @focus="handleFocus"
-            :value="formData.lyric"
-            maxlength="144"
-          ></textarea>
-          <div v-show="errors.lyric" class="form-error-field">
-            {{ errors.lyric }}
+          <div class="add-lyrics-song-lyrics" :ref="inputRefs.lyric">
+            <label>{{ t("add.form.lyrics") }}</label>
+            <textarea
+              type="text"
+              name="lyric"
+              @input="handleChange"
+              @focus="handleFocus"
+              :value="formData.lyric"
+              maxlength="144"
+            ></textarea>
+            <div v-show="errors.lyric" class="form-error-field">
+              {{ errors.lyric }}
+            </div>
           </div>
-        </div>
 
-        <div class="add-lyrics-song-language" :ref="inputRefs.language">
-          <label>{{ t("add.form.language") }}</label>
-          <select name="language" @change="handleChange" @focus="handleFocus">
-            <option value="">{{ t("common.form.select.choose") }}</option>
-            <option value="en">English</option>
-            <option value="tr">Türkçe</option>
-          </select>
-          <div v-show="errors.language" class="form-error-field">
-            {{ errors.language }}
+          <div class="add-lyrics-song-language" :ref="inputRefs.language">
+            <label>{{ t("add.form.language") }}</label>
+            <select name="language" @change="handleChange" @focus="handleFocus">
+              <option value="">{{ t("common.form.select.choose") }}</option>
+              <option value="en">English</option>
+              <option value="tr">Türkçe</option>
+            </select>
+            <div v-show="errors.language" class="form-error-field">
+              {{ errors.language }}
+            </div>
           </div>
-        </div>
 
-        <div
-          class="login-form-success-message"
-          :class="{ show: showSuccessMessage }"
-        >
-          {{ t("add.message.success") }}
-        </div>
-
-        <div v-show="errorMessage" class="login-form-error-message">
-          {{ errorMessage }}
-        </div>
-        <FormButton>{{ t("add.form.button.save") }}</FormButton>
-      </form>
-    </div>
-    <div class="right-side">
-      <img src="@/assets/images/add-lyrics-image.jpg" />
-    </div>
+          <FormSuccessMessage
+            :show="showSuccessMessage"
+            :message="t('add.message.success')"
+          />
+          <FormErrorMessage :message="errorMessage" />
+          <FormButton>{{ t("add.form.button.save") }}</FormButton>
+        </form>
+      </template>
+      <template #right>
+        <div class="right-side">
+          <FormImage
+            alt="add image"
+            src="/src/assets/images/add-lyrics-image.jpg"
+          /></div
+      ></template>
+    </TwoColumnLayout>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
-import { API } from "@/api/api";
+import { LyricAPI } from "@/api/lyric/lyric";
 import { AddSchema, AddSchemaFormType } from "@/pages/Add/types";
 import { VF } from "@/utils/validateForm.js";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
 import { useQuery } from "@tanstack/vue-query";
 import { timeAsMs } from "@/utils/time";
+import FormImage from "@/components/common/ui/FormImage.vue";
+import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
+import TopLink from "@/components/common/TopLink.vue";
+import WelcomeMessage from "@/components/common/WelcomeMessage.vue";
+import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
+import FormSuccessMessage from "@/components/common/ui/FormSuccessMessage.vue";
+import FormInput from "@/components/common/ui/FormInput.vue";
 
 const { t } = useI18n();
 
 const { data: moods } = useQuery({
   queryKey: ["moods"],
-  queryFn: () => API.fetchMoods(),
+  queryFn: () => LyricAPI.fetchMoods(),
   staleTime: timeAsMs(10, "minutes"),
 });
 
@@ -129,7 +128,7 @@ const initialData = {
 
 let formData = ref({ ...initialData });
 
-const errorMessage = ref<null | string[] | string[][]>(null);
+const errorMessage = ref<null | string>(null);
 const showSuccessMessage = ref(false);
 
 const { validateForm, onFocus, errors, inputRefs } = VF<AddSchemaFormType>({
@@ -150,7 +149,6 @@ function handleFocus(event: Event) {
 
 function handleSubmit() {
   const { isFormValid } = validateForm();
-
   if (!isFormValid) return;
 
   const payload = {
@@ -158,7 +156,7 @@ function handleSubmit() {
     lyric: formData.value.lyric.split("\n").map((line) => line.trim()),
   };
 
-  API.add({
+  LyricAPI.add({
     payload: payload,
     onSuccess: (response) => {
       showSuccessMessage.value = true;
@@ -179,75 +177,36 @@ function handleSubmit() {
 </script>
 <style lang="scss" scoped>
 .add-lyrics-page {
-  display: flex;
-  align-items: flex-start;
-  height: 100vh;
-
   h3 {
     font-weight: 500;
   }
 
-  @include mobileOrTablet {
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-  }
-  .left-side {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+  .add-lyrics-form {
+    padding: 3rem;
+    max-width: 800px;
 
     @include mobileOrTablet {
+      margin: 0;
       width: 100%;
     }
-    .add-lyrics-form {
-      padding: 3rem;
-      width: 50%;
-      margin: auto;
-      @include mobileOrTablet {
-        margin: 0;
-        width: 100%;
-      }
-      label {
-        display: block;
-        font-size: 1rem;
-        font-weight: 700;
-        line-height: 2.5rem;
-      }
-      input {
-        height: 2.5rem;
-        width: 100%;
-        margin: 0.5rem 0;
-      }
-      textarea {
-        height: 8rem;
-        width: 100%;
-      }
-      select {
-        width: 100%;
-        height: 40px;
-      }
+    label {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 2.5rem;
     }
-
-    .link {
-      color: #3b82f6;
-      font-weight: bold;
+    textarea {
+      height: 8rem;
+      width: 100%;
+    }
+    select {
+      width: 100%;
+      height: 40px;
     }
   }
+
   .right-side {
-    width: 50%;
     height: 100%;
-
-    @include mobileOrTablet {
-      width: 100%;
-      height: 30%;
-    }
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
   }
 }
 </style>
