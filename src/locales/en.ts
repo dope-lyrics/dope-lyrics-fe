@@ -12,6 +12,7 @@ const en = {
         choose: "Please choose an option...",
       },
     },
+    close: "Close",
   },
   homepage: {
     welcome: "Welcome to {name} {title}",
@@ -53,6 +54,14 @@ const en = {
     },
     login: "Login",
     haveAccount: "Already have an account?",
+    modal: {
+      error: {
+        title: "Error occured",
+      },
+      success: {
+        title: "Successful",
+      },
+    },
   },
   add: {
     addLyrics: "Add Lyrics",

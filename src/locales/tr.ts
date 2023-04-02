@@ -5,13 +5,14 @@ const tr = {
     backToHome: "Anasayfaya dön",
     validation: {
       cantBeEmpty: "Bu alan boş olamaz!",
-      notValid: "Geçerli bir email adresi giriniz."
+      notValid: "Geçerli bir email adresi giriniz.",
     },
     form: {
       select: {
         choose: "Seçiniz...",
       },
     },
+    close: "Kapat",
   },
   homepage: {
     welcome: "{name} ' e hoş geldin {title} ",
@@ -53,6 +54,14 @@ const tr = {
     },
     login: "Giriş yap",
     haveAccount: "Daha önce üye olmuş muydunuz?",
+    modal: {
+      error: {
+        title: "Hata oluştu",
+      },
+      success: {
+        title: "Başarılı",
+      },
+    },
   },
   add: {
     addLyrics: "Şarkı sözü ekle",

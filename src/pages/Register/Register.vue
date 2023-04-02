@@ -46,8 +46,6 @@
             :errors="errors.passwordConfirm"
           />
 
-          <FormErrorMessage :message="errorMessage" />
-
           <FormButton> {{ t("register.form.submit") }}</FormButton>
         </form>
 
@@ -72,6 +70,20 @@
       </template>
     </TwoColumnLayout>
   </div>
+  <Modal
+    type="error"
+    v-model="errorModal.show"
+    :title="t('register.modal.error.title')"
+    :description="errorModal.description"
+    @confirm="errorModal.show = false"
+  />
+  <Modal
+    type="success"
+    v-model="successModal.show"
+    :title="t('register.modal.success.title')"
+    :description="successModal.description"
+    @confirm="successModal.show = false"
+  />
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
@@ -80,15 +92,25 @@ import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
 import { RegisterSchema, RegisterSchemaType } from "@/pages/Register/types";
 import FormInput from "@/components/common/ui/FormInput.vue";
-import WelcomeMessage from "@/components/common/ui/WelcomeMessage.vue";
+import WelcomeMessage from "@/components/common/WelcomeMessage.vue";
 import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
-import TopLink from "@/components/common/ui/TopLink.vue";
-import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
+import TopLink from "@/components/common/TopLink.vue";
 import BottomLink from "@/components/common/ui/BottomLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
 import { UserAPI } from "@/api/user/user";
+import Modal from "@/components/modals/Modal.vue";
 
 const { t } = useI18n();
+
+const errorModal = reactive({
+  show: false,
+  description: "",
+});
+
+const successModal = reactive({
+  show: false,
+  description: "",
+});
 
 const formData = reactive({
   username: "",
@@ -97,7 +119,6 @@ const formData = reactive({
   passwordConfirm: "",
   rememberMe: false,
 });
-const errorMessage = ref<null | string>(null);
 
 const { validateForm, onFocus, errors, inputRefs } = VF<RegisterSchemaType>({
   formData,
@@ -112,11 +133,12 @@ function handleSubmit() {
   UserAPI.register({
     payload: formData,
     onSuccess: (message) => {
-      alert(message);
+      successModal.show = true;
+      successModal.description = message;
     },
     onError: (error) => {
-      console.log(error);
-      alert(error);
+      errorModal.show = true;
+      errorModal.description = error;
     },
   });
 }

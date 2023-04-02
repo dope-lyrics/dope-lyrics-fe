@@ -63,10 +63,10 @@ import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
 import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
 import FormInput from "@/components/common/ui/FormInput.vue";
-import WelcomeMessage from "@/components/common/ui/WelcomeMessage.vue";
+import WelcomeMessage from "@/components/common/WelcomeMessage.vue";
 import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
 import BottomLink from "@/components/common/ui/BottomLink.vue";
-import TopLink from "@/components/common/ui/TopLink.vue";
+import TopLink from "@/components/common/TopLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
 
 onBeforeRouteLeave((to, from) => {

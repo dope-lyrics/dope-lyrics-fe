@@ -33,6 +33,7 @@ async function register({ payload, onError, onSuccess }: Register) {
       data: { message: string };
       error: string;
     }>("/register", payload);
+
     const data = response.data?.data;
 
     if (onSuccess) onSuccess(data.message);
