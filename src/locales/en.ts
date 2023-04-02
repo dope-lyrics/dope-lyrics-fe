@@ -63,6 +63,14 @@ const en = {
       },
     },
   },
+  verify: {
+    result: {
+      success: "Account has been created successfully.",
+    },
+    description1: "You have to click button below to verify your account.",
+    verify: "Verify now",
+    haveIssue: "If you have any issue, you can contact us via",
+  },
   add: {
     addLyrics: "Add Lyrics",
     description: "Share your favorite lyrics with the world!",

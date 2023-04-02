@@ -63,6 +63,15 @@ const tr = {
       },
     },
   },
+  verify: {
+    result: {
+      success: "Üyelik başarılı.",
+    },
+    description1:
+      "Hesabını onaylamak için aşağıdaki butona tıklaman gerekiyor.",
+    verify: "Hemen onayla",
+    haveIssue: "Bir problem yaşaman durumunda bize bu hesap üzerinden ulaşabilirsin:"
+  },
   add: {
     addLyrics: "Şarkı sözü ekle",
     description: "En beğendiğin şarkı sözlerini dünya ile paylaş!",

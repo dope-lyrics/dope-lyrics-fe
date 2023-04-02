@@ -1,39 +1,73 @@
-<template>
+n<template>
   <main class="verify-page">
     <div class="content">
       <h2><i>Dope Lyrics</i></h2>
-      <p>You have to click button below to verify your account.</p>
+      <p>{{ t("verify.description1") }}</p>
       <p>
-        If you have any issue, you can contact us via
+        {{ t("verify.haveIssue") }}
         <a href="mailto:dope.lyrics.info@gmail.com"
           >dope.lyrics.info@gmail.com</a
         >
       </p>
       <button type="button" class="btn-verify" @click="verifyAccount">
-        Verify now
+        {{ t("verify.verify") }}
       </button>
     </div>
   </main>
+  <Modal
+    type="error"
+    v-model="errorModal.show"
+    :title="t('register.modal.error.title')"
+    :description="errorModal.description"
+    @confirm="errorModal.show = false"
+  />
+  <Modal
+    type="success"
+    v-model="successModal.show"
+    :title="t('register.modal.success.title')"
+    :description="successModal.description"
+    @confirm="handleCloseSuccessModal"
+  />
 </template>
 
 <script setup lang="ts">
 import { UserAPI } from "@/api/user/user";
-import { watch } from "vue";
-import { useRoute } from "vue-router";
+import { reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import Modal from "@/components/modals/Modal.vue";
 
-const router = useRoute();
-const code = router.params?.code as string;
+const { t } = useI18n();
 
-watch(router.params, () => {
-  console.log("router: ", router);
+const router = useRouter();
+const route = useRoute();
+const code = route.params?.code as string;
+
+const errorModal = reactive({
+  show: false,
+  description: "",
+});
+
+const successModal = reactive({
+  show: false,
+  description: "",
 });
 
 const verifyAccount = () => {
   UserAPI.verify({
     code: code,
-    onSuccess: (data) => {},
-    onError: (error) => {},
+    onSuccess: (data) => {
+      successModal.show = true;
+      successModal.description = t("verify.result.success");
+    },
+    onError: (error) => {
+      errorModal.show = true;
+      errorModal.description = error;
+    },
   });
+};
+const handleCloseSuccessModal = () => {
+  router.push({ name: "Home" });
 };
 </script>
 
