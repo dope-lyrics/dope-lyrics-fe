@@ -85,10 +85,7 @@
       </template>
       <template #right>
         <div class="right-side">
-          <FormImage
-            alt="add image"
-            src="/src/assets/images/add-lyrics-image.jpg"
-          /></div
+          <FormImage alt="add image" :src="addImage" /></div
       ></template>
     </TwoColumnLayout>
   </div>
@@ -109,6 +106,7 @@ import WelcomeMessage from "@/components/common/WelcomeMessage.vue";
 import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
 import FormSuccessMessage from "@/components/common/ui/FormSuccessMessage.vue";
 import FormInput from "@/components/common/ui/FormInput.vue";
+import addImage from "@/assets/images/add-lyrics-image.jpg";
 
 const { t } = useI18n();
 

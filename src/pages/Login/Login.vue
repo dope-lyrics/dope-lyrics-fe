@@ -41,10 +41,7 @@
       </template>
       <template #right>
         <div class="right">
-          <FormImage
-            src="/src/assets/images/login-horizontal.jpeg"
-            alt="login image"
-          />
+          <FormImage :src="loginImage" alt="login image" />
         </div>
       </template>
     </TwoColumnLayout>
@@ -68,6 +65,7 @@ import FormErrorMessage from "@/components/common/ui/FormErrorMessage.vue";
 import BottomLink from "@/components/common/ui/BottomLink.vue";
 import TopLink from "@/components/common/TopLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
+import loginImage from "@/assets/images/login-horizontal.jpeg";
 
 onBeforeRouteLeave((to, from) => {
   store.requestedFrom = "";
