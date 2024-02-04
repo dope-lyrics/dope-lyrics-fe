@@ -18,7 +18,7 @@ const { locale } = useI18n();
 const currentLanguage = ref();
 
 onMounted(() => {
-  currentLanguage.value = CookieManager.get.lang();
+  currentLanguage.value = CookieManager.getters.lang();
   locale.value = currentLanguage.value;
 });
 
@@ -26,7 +26,7 @@ function handleChangeLanguage(event: Event) {
   currentLanguage.value = (event.target as HTMLSelectElement).value;
   locale.value = currentLanguage.value;
 
-  CookieManager.set.lang(currentLanguage.value);
+  CookieManager.setters.lang(currentLanguage.value);
 
   // Refresh the page to make sure the localization data is updated after changing the language.
   window.location.reload();

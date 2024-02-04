@@ -10,7 +10,7 @@ const COOKIES = {
 const { access_token, refresh_token, user, lang } = COOKIES;
 
 const CookieManager = {
-  get: {
+  getters: {
     accessToken: () => {
       return Cookies.get(access_token);
     },
@@ -27,7 +27,7 @@ const CookieManager = {
       return Cookies.get(lang) as Languages;
     },
   },
-  set: {
+  setters: {
     accessToken: (
       value: string,
       options?: Cookies.CookieAttributes | undefined

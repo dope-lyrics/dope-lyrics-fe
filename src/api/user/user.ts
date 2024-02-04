@@ -80,13 +80,13 @@ async function token(
     });
 
     if (newTokens.data) {
-      CookieManager.set.accessToken(newTokens.data.data.accessToken);
+      CookieManager.setters.accessToken(newTokens.data.data.accessToken);
 
       const decodedRefreshToken: { exp: number } = jwt_decode(
         newTokens.data.data.refreshToken
       );
       const refreshTokenExpDate = new Date(decodedRefreshToken.exp * 1000);
-      CookieManager.set.refreshToken(newTokens.data.data.refreshToken, {
+      CookieManager.setters.refreshToken(newTokens.data.data.refreshToken, {
         expires: refreshTokenExpDate,
       });
     }
@@ -116,19 +116,19 @@ async function verify({ code, onError, onSuccess }: VerifyParameters) {
 }
 
 const storeLoginInfo = (data: LoginVerifyResponse["data"]) => {
-  CookieManager.set.accessToken(data.accessToken);
+  CookieManager.setters.accessToken(data.accessToken);
 
   const decodedRefreshToken: { exp: number } = jwt_decode(data.refreshToken);
   const refreshTokenExpDate = new Date(decodedRefreshToken.exp * 1000);
 
-  CookieManager.set.refreshToken(data.refreshToken, {
+  CookieManager.setters.refreshToken(data.refreshToken, {
     expires: refreshTokenExpDate,
   });
 
   store.user = data?.user;
 
   if (store.user) {
-    CookieManager.set.user(store.user, {
+    CookieManager.setters.user(store.user, {
       expires: refreshTokenExpDate,
     });
   }

@@ -15,17 +15,17 @@ const i18n = createI18n({
 });
 
 const initLocaleFromCookie = () => {
-  if (CookieManager.get.lang()) {
-    i18n.global.locale.value = CookieManager.get.lang();
+  if (CookieManager.getters.lang()) {
+    i18n.global.locale.value = CookieManager.getters.lang();
     return;
   }
 
-  CookieManager.set.lang(i18n.global.locale.value);
+  CookieManager.setters.lang(i18n.global.locale.value);
 };
 
 initLocaleFromCookie();
 
 const localizationMessages =
-  i18n.global.messages.value[CookieManager.get.lang()];
+  i18n.global.messages.value[CookieManager.getters.lang()];
 
 export { i18n, localizationMessages };
