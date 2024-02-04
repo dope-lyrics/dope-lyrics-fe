@@ -4,10 +4,10 @@ type User = {
   user: null | {
     username: string;
   };
-  requestedFrom: string;
+  redirectTo: string;
 };
 
 export const store: User = reactive({
   user: null,
-  requestedFrom: "",
+  redirectTo: "",
 });

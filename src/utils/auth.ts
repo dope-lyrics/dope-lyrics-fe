@@ -4,7 +4,7 @@ import { CookieManager } from "@/utils/CookieManager";
 function Auth() {
   let isAuthenticated = false;
   
-  const userInCookie = CookieManager.get.user();
+  const userInCookie = CookieManager.getters.user();
 
   if (userInCookie) {
     isAuthenticated = true;

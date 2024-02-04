@@ -17,8 +17,5 @@ nav {
   justify-content: space-between;
   max-width: 1024px;
   margin: auto;
-
-  a {
-  }
 }
 </style>

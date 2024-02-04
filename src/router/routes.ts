@@ -1,5 +1,4 @@
 import Home from "@/pages/Home.vue";
-import About from "@/pages/About.vue";
 import Login from "@/pages/Login/Login.vue";
 import Add from "@/pages/Add/Add.vue";
 import AlreadyLoggedIn from "@/pages/AlreadyLoggedIn.vue";
@@ -13,12 +12,6 @@ const routes = [
     name: "Home",
     component: Home,
     alias: "/home",
-    meta: { requiresAuth: false },
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
     meta: { requiresAuth: false },
   },
   {

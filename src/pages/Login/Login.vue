@@ -68,7 +68,7 @@ import FormImage from "@/components/common/ui/FormImage.vue";
 import loginImage from "@/assets/images/login-horizontal.jpeg";
 
 onBeforeRouteLeave((to, from) => {
-  store.requestedFrom = "";
+  store.redirectTo = "";
 });
 
 const router = useRouter();
@@ -87,13 +87,13 @@ const { validateForm, onFocus, errors, inputRefs } = VF<LoginSchemaType>({
 });
 
 function navigate() {
-  if (!store.requestedFrom) {
+  if (!store.redirectTo) {
     router.push({ name: "Home" });
     return;
   }
 
   const requester = privateRoutes.find(
-    (routeName) => routeName === store.requestedFrom
+    (routeName) => routeName === store.redirectTo
   );
 
   if (requester) {

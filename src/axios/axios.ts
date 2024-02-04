@@ -19,7 +19,7 @@ const axiosPrivate = axios.create(commonConfig);
 a.interceptors.request.use(
   async function (config: any) {
     config.headers["Accept-Language"] =
-      CookieManager.get.lang() || i18n.global.locale.value;
+      CookieManager.getters.lang() || i18n.global.locale.value;
 
     return config;
   },
@@ -30,11 +30,11 @@ a.interceptors.request.use(
 
 axiosPrivate.interceptors.request.use(
   async function (config: any) {
-    if (!CookieManager.get.accessToken()) {
+    if (!CookieManager.getters.accessToken()) {
       return;
     }
 
-    if (!CookieManager.get.refreshToken()) {
+    if (!CookieManager.getters.refreshToken()) {
       CookieManager.remove.clearAll();
 
       window.location.href = "/";
@@ -43,20 +43,20 @@ axiosPrivate.interceptors.request.use(
 
     const currentDate = new Date();
     const decodedToken: { exp: number } = jwt_decode(
-      CookieManager.get.accessToken() as string
+      CookieManager.getters.accessToken() as string
     );
 
     const isTokenExpired = decodedToken.exp * 1000 < currentDate.getTime();
 
     if (isTokenExpired) {
-      await UserAPI.token(CookieManager.get.refreshToken() as string);
+      await UserAPI.token(CookieManager.getters.refreshToken() as string);
     }
     config.headers[
       "authorization"
-    ] = `Bearer ${CookieManager.get.accessToken()}`;
+    ] = `Bearer ${CookieManager.getters.accessToken()}`;
 
     config.headers["Accept-Language"] =
-      CookieManager.get.lang() || i18n.global.locale.value;
+      CookieManager.getters.lang() || i18n.global.locale.value;
 
     return config;
   },

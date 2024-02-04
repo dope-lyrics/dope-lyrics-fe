@@ -32,7 +32,7 @@ router.beforeEach((to, from) => {
    */
 
   if (!isAuthenticated && to.meta.requiresAuth) {
-    store.requestedFrom = to.name as string;
+    store.redirectTo = to.name as string;
     return { name: "Login" };
   }
 
