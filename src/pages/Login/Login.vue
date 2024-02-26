@@ -67,10 +67,6 @@ import TopLink from "@/components/common/TopLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
 import loginImage from "@/assets/images/login-horizontal.jpeg";
 
-onBeforeRouteLeave((to, from) => {
-  store.redirectTo = "";
-});
-
 const router = useRouter();
 const { t } = useI18n();
 
