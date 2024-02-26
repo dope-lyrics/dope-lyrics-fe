@@ -1,21 +1,28 @@
 <template>
-  <div class="form-input" :ref="inputRef">
-    <label>{{ label }}</label>
+  <div class="form-input" :ref="props.inputRef">
+    <label :for="`input-${props.name}`">{{ label }}</label>
     <input
-      :type="type"
-      :name="name"
+      :id="`input-${props.name}`"
+      :type="props.type"
+      :name="props.name"
       @input="handleChange"
       @focus="handleFocus"
-      :maxlength="maxlength"
+      :maxlength="props.maxlength"
     />
-    <div v-show="errors" class="form-error-field">
-      <div v-for="_err in errors">{{ _err }}</div>
+    <div
+      v-if="props.errors.length > 0"
+      class="form-error-field"
+      :class="{ [props.name]: props.name }"
+    >
+      <div v-for="_err in props.errors">{{ _err }}</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<FormInputProps>();
+import { watch } from "vue";
+
+const props = defineProps<FormInputProps>();
 const emit = defineEmits(["change", "focus"]);
 
 type FormInputProps = {
@@ -26,6 +33,15 @@ type FormInputProps = {
   errors: string[];
   maxlength?: string;
 };
+
+console.log(props.errors);
+
+watch(
+  () => props.errors,
+  () => {
+    console.log(props.errors);
+  }
+);
 
 const handleChange = (event: Event) => {
   emit("change", event);

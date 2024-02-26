@@ -43,8 +43,8 @@
                 {{ mood.value }}
               </option>
             </select>
-            <div v-show="errors.mood" class="form-error-field">
-              {{ errors.mood }}
+            <div v-if="errors.mood.length > 0" class="form-error-field">
+              {{ errors.mood.at(0) }}
             </div>
           </div>
 
@@ -58,8 +58,8 @@
               :value="formData.lyric"
               maxlength="144"
             ></textarea>
-            <div v-show="errors.lyric" class="form-error-field">
-              {{ errors.lyric }}
+            <div v-if="errors.lyric.length > 0" class="form-error-field">
+              {{ errors.lyric.at(0) }}
             </div>
           </div>
 
@@ -70,8 +70,8 @@
               <option value="en">English</option>
               <option value="tr">Türkçe</option>
             </select>
-            <div v-show="errors.language" class="form-error-field">
-              {{ errors.language }}
+            <div v-if="errors.language.length > 0" class="form-error-field">
+              {{ errors.language.at(0) }}
             </div>
           </div>
 
