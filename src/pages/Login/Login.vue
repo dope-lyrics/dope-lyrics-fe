@@ -53,9 +53,7 @@ import { UserAPI } from "@/api/user/user";
 import { VF } from "@/utils/validateForm.js";
 import { LoginSchema } from "@/pages/Login/types";
 import type { LoginSchemaType } from "@/pages/Login/types";
-import { useRouter, onBeforeRouteLeave } from "vue-router";
-import { store } from "@/store/store";
-import { privateRoutes } from "@/router/routes";
+import { useRouter } from "vue-router";
 import FormButton from "@/components/common/ui/FormButton.vue";
 import { useI18n } from "vue-i18n";
 import TwoColumnLayout from "@/layouts/TwoColumnLayout.vue";
@@ -66,7 +64,9 @@ import BottomLink from "@/components/common/ui/BottomLink.vue";
 import TopLink from "@/components/common/TopLink.vue";
 import FormImage from "@/components/common/ui/FormImage.vue";
 import loginImage from "@/assets/images/login-horizontal.jpeg";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
@@ -83,18 +83,12 @@ const { validateForm, onFocus, errors, inputRefs } = VF<LoginSchemaType>({
 });
 
 function navigate() {
-  if (!store.redirectTo) {
+  if (!route.query.redirect) {
     router.push({ name: "Home" });
     return;
   }
 
-  const requester = privateRoutes.find(
-    (routeName) => routeName === store.redirectTo
-  );
-
-  if (requester) {
-    router.push({ name: requester });
-  }
+  router.push(route.query.redirect as string);
 }
 
 function handleSubmit() {

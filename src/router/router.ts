@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { store } from "@/store/store";
 import { routes } from "@/router/routes";
 import { Auth } from "@/utils/auth";
 
@@ -32,8 +31,7 @@ router.beforeEach((to, from) => {
    */
 
   if (!isAuthenticated && to.meta.requiresAuth) {
-    store.redirectTo = to.name as string;
-    return { name: "Login" };
+    return { name: "Login", query: { redirect: to.path } };
   }
 
   // validated, go on.

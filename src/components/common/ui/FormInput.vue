@@ -20,8 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
-
 const props = defineProps<FormInputProps>();
 const emit = defineEmits(["change", "focus"]);
 
@@ -33,15 +31,6 @@ type FormInputProps = {
   errors: string[];
   maxlength?: string;
 };
-
-console.log(props.errors);
-
-watch(
-  () => props.errors,
-  () => {
-    console.log(props.errors);
-  }
-);
 
 const handleChange = (event: Event) => {
   emit("change", event);
