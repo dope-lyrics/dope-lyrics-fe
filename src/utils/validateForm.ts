@@ -35,7 +35,7 @@ function VF<T extends object>({
   let inputRefs: any = {};
 
   Object.keys(formData).forEach((key) => {
-    obj[key] = "";
+    obj[key] = [];
     inputRefs[key] = ref();
   });
 
@@ -46,7 +46,7 @@ function VF<T extends object>({
     const inputName = input.name;
 
     // remove validation error message in form
-    errors[inputName as keyof typeof errors] = "";
+    errors[inputName as keyof typeof errors] = [];
 
     // remove red border on input
     input.parentElement?.classList.remove("form-error");
