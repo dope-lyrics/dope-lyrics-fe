@@ -1,7 +1,6 @@
-import { screen, render } from "@testing-library/vue";
+import { screen, render, fireEvent } from "@testing-library/vue";
 import "@testing-library/jest-dom";
 import Login from "@/pages/Login/Login.vue";
-import { fireEvent } from "@testing-library/vue";
 
 beforeEach(() => {
   render(Login);
@@ -37,7 +36,7 @@ describe("show error when inputs are empty after submissions", () => {
 });
 
 it("shows error if username input length is less than 6", async () => {
-  const usernameInput = screen.getByLabelText(/username/i) as HTMLInputElement;
+  const usernameInput = screen.getByLabelText(/username/i);
   const inputValueLessThan6Character = "usern";
 
   await fireEvent.update(usernameInput, inputValueLessThan6Character);
@@ -56,7 +55,7 @@ it("shows error if username input length is less than 6", async () => {
 });
 
 it("shows error if password input length is less than 3 after form submission", async () => {
-  const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
+  const passwordInput = screen.getByLabelText(/password/i);
   const inputValueLessThan3Character = "pa";
 
   await fireEvent.update(passwordInput, inputValueLessThan3Character);
