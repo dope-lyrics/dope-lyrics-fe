@@ -22,6 +22,7 @@ beforeAll(() => {
         };
       }),
       RouterLink: vi.fn(),
+      useRoute: vi.fn(),
     };
   });
 
